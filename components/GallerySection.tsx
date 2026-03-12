@@ -105,8 +105,8 @@ export default function GallerySection() {
                     key={category}
                     onClick={() => setActiveCategory(category)}
                     className={`px-4 py-1.5 rounded-full font-[family-name:var(--font-oswald-bold)] tracking-widest uppercase text-xs border-2 transition-all duration-300 ${activeCategory === category
-                        ? "bg-pink-400 text-white border-pink-400 shadow-sm"
-                        : "bg-transparent text-slate-400 border-slate-200 hover:border-pink-300 hover:text-pink-400"
+                      ? "bg-pink-400 text-white border-pink-400 shadow-sm"
+                      : "bg-transparent text-slate-400 border-slate-200 hover:border-pink-300 hover:text-pink-400"
                       }`}
                   >
                     {category}
@@ -148,7 +148,7 @@ export default function GallerySection() {
                       className="object-cover hover:scale-105 transition-transform duration-500"
                     />
                     {/* Optional label for the category in the modal */}
-                    {activeCategory === "Wszystkie" && (
+                    {activeCategory === "WSZYSTKIE" && (
                       <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-md text-xs font-[family-name:var(--font-oswald-bold)] tracking-wider">
                         {img.category}
                       </div>
