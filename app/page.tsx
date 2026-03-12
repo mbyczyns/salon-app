@@ -1,4 +1,5 @@
 import Image from "next/image";
+import GallerySection from "@/components/GallerySection";
 
 export default function Home() {
   return (
@@ -151,97 +152,12 @@ export default function Home() {
       </div>
 
 
-      {/* GALERIA ZDJEC */}
-      <div className="mt-12 w-full max-w-5xl mx-auto rounded-xl bg-white shadow-xl outline outline-black/5 z-10 p-8 md:p-12">
-
-        <div className="mb-10">
-          <h2 className="text-4xl font-bold tracking-wider text-pink-400 mb-2 font-[family-name:var(--font-oswald-bold)]">
-            Nasze Prace
-          </h2>
-          <p className="text-slate-600 font-[family-name:var(--font-oswald-light)] text-xl tracking-wide">
-            Zobacz metamorfozy naszych klientek
-          </p>
-        </div>
-
-        {/* SIATKA ZDJĘĆ (GRID) */}
-        {/* Na telefonie 2 kolumny, na komputerze 3 kolumny, ładne odstępy (gap-4) */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-
-          {/* ZDJĘCIE 1 */}
-          {/* Klasa 'group' pozwala nam na stworzenie animacji po najechaniu, a 'aspect-square' robi idealne kwadraty */}
-          <div className="relative aspect-square overflow-hidden rounded-lg shadow-sm group cursor-pointer">
-            <Image
-              src="/portret.jpg" /* PODMIEŃ NA: /galeria-1.jpg itp. */
-              alt="Metamorfoza włosów 1"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-          </div>
-
-          {/* ZDJĘCIE 2 */}
-          <div className="relative aspect-square overflow-hidden rounded-lg shadow-sm group cursor-pointer">
-            <Image
-              src="/portret.jpg" /* PODMIEŃ NA SWOJE ZDJĘCIE */
-              alt="Metamorfoza włosów 2"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-          </div>
-
-          {/* ZDJĘCIE 3 */}
-          <div className="relative aspect-square overflow-hidden rounded-lg shadow-sm group cursor-pointer">
-            <Image
-              src="/portret.jpg" /* PODMIEŃ NA SWOJE ZDJĘCIE */
-              alt="Metamorfoza włosów 3"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-          </div>
-
-          {/* ZDJĘCIE 4 */}
-          <div className="relative aspect-square overflow-hidden rounded-lg shadow-sm group cursor-pointer">
-            <Image
-              src="/portret.jpg" /* PODMIEŃ NA SWOJE ZDJĘCIE */
-              alt="Metamorfoza włosów 4"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-          </div>
-
-          {/* ZDJĘCIE 5 */}
-          <div className="relative aspect-square overflow-hidden rounded-lg shadow-sm group cursor-pointer">
-            <Image
-              src="/portret.jpg" /* PODMIEŃ NA SWOJE ZDJĘCIE */
-              alt="Metamorfoza włosów 5"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-          </div>
-
-          {/* ZDJĘCIE 6 */}
-          <div className="relative aspect-square overflow-hidden rounded-lg shadow-sm group cursor-pointer">
-            <Image
-              src="/portret.jpg" /* PODMIEŃ NA SWOJE ZDJĘCIE */
-              alt="Metamorfoza włosów 6"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-          </div>
-
-        </div>
-
-        {/* PRZYCISK "ZOBACZ WIĘCEJ" (Opcjonalnie, jeśli chcesz potem zrobić osobną podstronę) */}
-        <div className="mt-20 flex justify-center">
-          <button className="rounded-full border-2 border-pink-400 px-8 py-2 text-pink-500 font-[family-name:var(--font-oswald-bold)] tracking-widest uppercase hover:bg-pink-400 hover:text-white transition-colors duration-300">
-            Zobacz nasz Instagram
-          </button>
-        </div>
-
-      </div>
+      {/* GALERIA ZDJEC KOMPONENT */}
+      <GallerySection />
 
       {/* KARTA "KONTAKT" */}
       {/* Zmieniłem mt-12 na mt-20, żeby utrzymać te równe odstępy, o których rozmawialiśmy! */}
-      <div className="mt-20 mb-12 w-full mx-auto flex flex-col md:flex-row max-w-5xl rounded-xl bg-white shadow-xl outline outline-black/5 z-10 overflow-hidden">
+      <div className="mt-12 mb-12 w-full mx-auto flex flex-col md:flex-row max-w-5xl rounded-xl bg-white shadow-xl outline outline-black/5 z-10 overflow-hidden">
 
         {/* LEWA STRONA - DANE KONTAKTOWE */}
         <div className="flex-1 p-8 md:p-12 flex flex-col justify-center">
