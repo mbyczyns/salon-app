@@ -56,6 +56,26 @@ export default function RootLayout({
             <div className="flex gap-x-6 font-medium text-slate-600 items-center">
               {/* POPRAWKA: Dodano klasę z czcionką Oswald Bold do przycisku Panel CRM. 
                   Dodałem też klasę tracking-wide (lekkie rozsunięcie liter), bo Oswald to dość wąska czcionka i tak wygląda lepiej. */}
+
+              <Link
+                href="/klientki"
+                className="ml-4 px-3 py-1.5 text-pink-500 hover:text-slate-700 transition font-[family-name:var(--font-oswald-bold)] tracking-wide"
+              >
+                Klientki
+              </Link>
+              <Link
+                href="/rezerwacje"
+                className="ml-4 px-3 py-1.5 text-pink-500 hover:text-slate-700 transition font-[family-name:var(--font-oswald-bold)] tracking-wide"
+              >
+                Rezerwacje
+              </Link>
+
+              <Link
+                href="/stats"
+                className="ml-4 px-3 py-1.5 text-pink-500 hover:text-slate-700 transition font-[family-name:var(--font-oswald-bold)] tracking-wide"
+              >
+                Statystyki
+              </Link>
               <Link
                 href="/admin"
                 className="ml-4 rounded-full bg-pink-400 px-5 py-1.5 text-white hover:bg-slate-700 transition font-[family-name:var(--font-oswald-bold)] tracking-wide"

@@ -94,7 +94,7 @@ export default function GallerySection() {
             <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white z-10 sticky top-0">
               <div>
                 <h3 className="text-3xl font-[family-name:var(--font-oswald-bold)] text-pink-400 tracking-wide mb-3 md:mb-0">
-                  Pełna Galeria
+                  Galeria
                 </h3>
               </div>
 

@@ -18,17 +18,17 @@ export default function Home() {
         />
 
         {/* --- 2. NAKŁADKA NA TŁO (klasa 'absolute' lewituje nad zdjęciem) --- */}
-        <div className="absolute flex flex-col items-center text-center">
+        <div className="absolute flex flex-col items-center text-center -mt-8 md:-mt-16">
 
           <Image
             src="/globe.svg"
             alt="Logo na tle"
-            width={80}
-            height={80}
-            className="rounded-full shadow-md"
+            width={120}
+            height={120}
+            className="rounded-full shadow-md mb-20 md:mb-15"
           />
           {/* Zmieniony nagłówek ze spanami */}
-          <h2 className="text-5xl md:text-7xl drop-shadow-lg p-10">
+          <h2 className="text-5xl md:text-7xl drop-shadow-lg p-6">
             {/* Pierwsza część: Oswald Bold (Ewelina Mądra) */}
             <span className="font-[family-name:var(--font-oswald-bold)] font-bold text-pink-400 tracking-wide">
               Ewelina Mądra
@@ -216,7 +216,7 @@ export default function Home() {
         <div className="flex-1 relative w-full min-h-[400px] md:min-h-full bg-slate-100">
           {/* Zastąpiliśmy <Image> tagiem <iframe> od Google Maps */}
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2443.446884615367!2d21.006935115796853!3d52.23192367976159!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471ecc8c9269e9a5%3A0x8c603b57f12e1a3f!2sPa%C5%82ac%20Kultury%20i%20Nauki!5e0!3m2!1spl!2spl!4v1625565541604!5m2!1spl!2spl"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2409.689875948817!2d17.7193129770767!3d52.84597301204408!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47037b53515e31cd%3A0x49fb5198500c1d71!2sI%20Liceum%20Og%C3%B3lnokszta%C5%82c%C4%85ce%20im.%20Braci%20%C5%9Aniadeckich%20w%20%C5%BBninie!5e0!3m2!1spl!2spl!4v1773327935012!5m2!1spl!2spl"
             width="100%"
             height="100%"
             style={{ border: 0 }}
