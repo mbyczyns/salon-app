@@ -2,20 +2,17 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image"; // Importujemy komponent Image dla optymalizacji
 import { clientsStore, formatPhone, type Client } from "@/lib/mockData";
-
 
 export default function KlientkiPage() {
     const [clients, setClients] = useState<Client[]>(clientsStore);
     const [searchQuery, setSearchQuery] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // Stan dla modala potwierdzenia usunięcia
     const [clientToDelete, setClientToDelete] = useState<Client | null>(null);
 
-    // Stan dla formularza dodawania klientki
-    const [newClient, setNewClient] = useState({ firstName: "", lastName: "", phone: "", lastVisit: "", otherInfo: "" });
+    const [newClient, setNewClient] = useState({ firstName: "", lastName: "", phone: "", email: "", lastVisit: "", otherInfo: "" });
 
-    // Logika filtrowania - ignoruje wielkość liter
     const filteredClients = clients.filter((client) => {
         const query = searchQuery.toLowerCase();
         return (
@@ -25,43 +22,56 @@ export default function KlientkiPage() {
         );
     });
 
-    // Obsługa dodania nowej klientki
     const handleAddClient = (e: React.FormEvent) => {
         e.preventDefault();
         if (!newClient.firstName || !newClient.lastName || !newClient.phone) return;
 
         const addedClient: Client = {
-            id: Date.now().toString(), // proste generowanie ID
+            id: Date.now().toString(),
             firstName: newClient.firstName,
             lastName: newClient.lastName,
             phone: newClient.phone,
-            lastVisit: newClient.lastVisit || "-", // opcjonalna wizyta
-            otherInfo: newClient.otherInfo || "-", //opcjonalne dodatkowe informacje o kliencie (np uczulenie na farbe)
+            email: newClient.email,
+            lastVisit: newClient.lastVisit || "-",
+            otherInfo: newClient.otherInfo || "-",
         };
 
         setClients([...clients, addedClient]);
-        setNewClient({ firstName: "", lastName: "", phone: "", lastVisit: "", otherInfo: "" });
+        setNewClient({ firstName: "", lastName: "", phone: "", email: "", lastVisit: "", otherInfo: "" });
         setIsModalOpen(false);
     };
 
     return (
-        <main className="min-h-screen bg-[oklch(96.7%_0.001_286.375)] text-slate-900 py-12 px-4 md:px-8 flex col justify-center">
-            <div className="w-full max-w-6xl mx-auto flex flex-col">
+        <main className="relative min-h-screen bg-slate-50 text-slate-900 py-12 px-4 md:px-8 flex justify-center overflow-x-hidden">
+
+            {/* WARSTWA TŁA */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <Image
+                    src="/hair-salon-bg.png"
+                    alt="Background"
+                    fill
+                    priority
+                    className="object-cover grayscale opacity-10" // 
+                />
+            </div>
+
+            {/* KONTENER TREŚCI */}
+            <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col">
 
                 {/* NAGŁÓWEK SEKCYJNY */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
                     <div>
-                        <h1 className="text-4xl md:text-5xl font-bold tracking-wider text-pink-400 mb-2 font-[family-name:var(--font-oswald-bold)] drop-shadow-sm">
+                        <h1 className="text-4xl md:text-5xl font-bold tracking-wider text-pink-500 mb-2 font-[family-name:var(--font-oswald-bold)] drop-shadow-md">
                             Baza Klientek
                         </h1>
-                        <p className="text-lg text-slate-500 font-[family-name:var(--font-oswald-light)] max-w-2xl">
+                        <p className="text-lg text-slate-600 font-[family-name:var(--font-oswald-light)] max-w-2xl bg-white/50 backdrop-blur-sm inline-block rounded-md px-2">
                             Zarządzaj swoimi klientkami, dodawaj nowe i przeglądaj historię.
                         </p>
                     </div>
 
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="rounded-full bg-pink-400 px-6 py-3 text-white font-[family-name:var(--font-oswald-bold)] tracking-widest uppercase hover:bg-pink-500 transition-colors shadow-md hover:shadow-lg flex items-center gap-2"
+                        className="rounded-full bg-pink-400 px-6 py-3 text-white font-[family-name:var(--font-oswald-bold)] tracking-widest uppercase hover:bg-pink-500 transition-all shadow-md hover:shadow-xl flex items-center gap-2"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -71,7 +81,7 @@ export default function KlientkiPage() {
                 </div>
 
                 {/* WYSZUKIWARKA */}
-                <div className="bg-white p-6 rounded-t-xl shadow-sm border-b border-slate-100 flex items-center">
+                <div className="bg-white/90 backdrop-blur-md p-6 rounded-t-xl shadow-sm border-b border-slate-100 flex items-center">
                     <div className="relative w-full max-w-md">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg className="h-5 w-5 text-slate-400" viewBox="0 0 20 20" fill="currentColor">
@@ -83,16 +93,16 @@ export default function KlientkiPage() {
                             placeholder="Szukaj po imieniu, nazwisku lub telefonie..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="pl-10 w-full py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-400 transition-colors font-[family-name:var(--font-oswald-light)] text-lg"
+                            className="pl-10 w-full py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-400 transition-colors font-[family-name:var(--font-oswald-light)] text-lg bg-white/50"
                         />
                     </div>
                 </div>
 
                 {/* TABELA KLIENTEK */}
-                <div className="bg-white rounded-b-xl shadow-xl outline outline-black/5 overflow-x-auto">
+                <div className="bg-white/95 backdrop-blur-md rounded-b-xl shadow-xl outline outline-black/5 overflow-x-auto">
                     <table className="w-full text-left border-collapse min-w-[600px]">
                         <thead>
-                            <tr className="bg-slate-50 text-slate-500 border-b-2 border-slate-100 font-[family-name:var(--font-oswald-bold)] tracking-wider uppercase text-sm">
+                            <tr className="bg-slate-50/80 text-slate-500 border-b-2 border-slate-100 font-[family-name:var(--font-oswald-bold)] tracking-wider uppercase text-sm">
                                 <th className="py-4 px-6 font-normal">Imię i Nazwisko</th>
                                 <th className="py-4 px-6 font-normal">Telefon</th>
                                 <th className="py-4 px-6 font-normal">Ostatnia wizyta</th>
@@ -102,7 +112,7 @@ export default function KlientkiPage() {
                         <tbody className="font-[family-name:var(--font-oswald-light)] text-lg text-slate-700">
                             {filteredClients.length > 0 ? (
                                 filteredClients.map((client) => (
-                                    <tr key={client.id} className="border-b border-slate-50 hover:bg-pink-50/50 transition-colors group">
+                                    <tr key={client.id} className="border-b border-slate-50 hover:bg-pink-50/80 transition-colors group">
                                         <td className="py-4 px-6 font-medium text-slate-800">
                                             {client.firstName} {client.lastName}
                                         </td>
@@ -114,31 +124,27 @@ export default function KlientkiPage() {
                                         </td>
                                         <td className="py-4 px-6 text-right">
                                             <div className="flex items-center justify-end gap-4">
-                                                {/* Dodaj wizytę */}
                                                 <Link
                                                     href={`/klientki/${client.id}/rezerwacja`}
                                                     title="Dodaj wizytę"
-                                                    className="p-2 text-slate-400 hover:text-pink-500 hover:bg-pink-50 rounded-lg transition-colors"
+                                                    className="p-2 text-slate-400 hover:text-pink-500 hover:bg-white rounded-lg transition-colors shadow-sm"
                                                 >
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-5 h-5">
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
                                                     </svg>
                                                 </Link>
-                                                {/* Szczegóły / profil */}
                                                 <Link
                                                     href={`/klientki/${client.id}`}
-                                                    title="Szczegóły klientki"
-                                                    className="p-2 text-slate-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+                                                    title="Szczegóły"
+                                                    className="p-2 text-slate-400 hover:text-blue-500 hover:bg-white rounded-lg transition-colors shadow-sm"
                                                 >
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-5 h-5">
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                                                     </svg>
                                                 </Link>
-                                                {/* Usuń */}
                                                 <button
-                                                    title="Usuń klientkę"
                                                     onClick={() => setClientToDelete(client)}
-                                                    className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                                    className="p-2 text-slate-400 hover:text-red-500 hover:bg-white rounded-lg transition-colors shadow-sm"
                                                 >
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-5 h-5">
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
@@ -157,12 +163,11 @@ export default function KlientkiPage() {
                             )}
                         </tbody>
                     </table>
-
-                    {/* Prosty wskaźnik ilości w stopce tabeli */}
-                    <div className="bg-slate-50 border-t border-slate-100 p-4 text-slate-400 text-sm font-[family-name:var(--font-oswald-bold)] tracking-wider uppercase text-right rounded-b-xl">
+                    <div className="bg-slate-50/80 border-t border-slate-100 p-4 text-slate-400 text-sm font-[family-name:var(--font-oswald-bold)] tracking-wider uppercase text-right rounded-b-xl">
                         Liczba klientek: {filteredClients.length}
                     </div>
                 </div>
+
 
                 {/* MODAL DODAWANIA KLIENTKI */}
                 {isModalOpen && (
@@ -234,6 +239,19 @@ export default function KlientkiPage() {
 
                                 <div>
                                     <label className="block text-sm font-[family-name:var(--font-oswald-bold)] text-slate-500 uppercase tracking-widest mb-1">
+                                        Email (opcjonalnie)
+                                    </label>
+                                    <input
+                                        type="email"
+                                        value={newClient.email}
+                                        onChange={(e) => setNewClient({ ...newClient, email: e.target.value })}
+                                        className="w-full border-b-2 border-slate-200 py-2 focus:outline-none focus:border-pink-400 transition-colors font-[family-name:var(--font-oswald-light)] text-lg placeholder-slate-300 bg-transparent"
+                                        placeholder="np. anna.kowalska@example.com"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-[family-name:var(--font-oswald-bold)] text-slate-500 uppercase tracking-widest mb-1">
                                         Dodatkowe informacje (opcjonalnie)
                                     </label>
                                     <input
@@ -247,12 +265,12 @@ export default function KlientkiPage() {
 
                                 <div>
                                     <label className="block text-sm font-[family-name:var(--font-oswald-bold)] text-slate-500 uppercase tracking-widest mb-1">
-                                        Inne i (opcjonalnie)
+                                        Data ostatniej wizyty (opcjonalnie)
                                     </label>
                                     <input
                                         type="date"
                                         value={newClient.lastVisit}
-                                        onChange={(e) => setNewClient({ ...newClient, otherInfo: e.target.value })}
+                                        onChange={(e) => setNewClient({ ...newClient, lastVisit: e.target.value })}
                                         className="w-full border-b-2 border-slate-200 py-2 focus:outline-none focus:border-pink-400 transition-colors font-[family-name:var(--font-oswald-light)] text-lg bg-transparent text-slate-700"
                                     />
                                 </div>

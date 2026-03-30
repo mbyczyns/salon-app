@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    container_name: salon_app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://salon_user:[EMAIL_ADDRESS]:5432/salon_db
+  db:
+    image: postgres:15
+    container_name: salon_db
+    environment:
+      POSTGRES_USER: salon_user
+      POSTGRES_PASSWORD: [ PASSWORD ]
+      POSTGRES_DB: salon_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - salon_db_data:/var/lib/postgresql/data
+
+secrets:
+  db_password:
+    file: ./creds/db_password.txt
+  db_user:
+    file: ./creds/db_user.txt
+  db_name:
+    file: ./creds/db_name.txt
+  db_host:
+    file: ./creds/db_host.txt
+  db_port:
+    file: ./creds/db_port.txt

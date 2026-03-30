@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { visitsStore, clientsStore, type Visit, addVisit, subscribe, searchClients, type Client } from "@/lib/mockData";
-import Link from "next/link";
+import Image from "next/image"
 import VisitDetailsModal from "@/components/VisitDetailsModal";
 
 type ViewMode = "Lista" | "Kalendarz" | "Mój Dzień";
@@ -21,7 +21,7 @@ export default function RezerwacjePage() {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [selectedVisit, setSelectedVisit] = useState<Visit | null>(null);
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
-    
+
     // Używamy stanu do wymuszenia re-renderu przy zmianach w store
     const [visits, setVisits] = useState(visitsStore);
 
@@ -70,8 +70,20 @@ export default function RezerwacjePage() {
 
     return (
         <main className="min-h-screen bg-[oklch(96.7%_0.001_286.375)] text-slate-900 py-12 px-4 md:px-8 flex flex-col items-center">
-            <div className="w-full max-w-6xl mx-auto flex flex-col">
-                
+
+            {/* WARSTWA TŁA */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <Image
+                    src="/hair-salon-bg.png"
+                    alt="Background"
+                    fill
+                    priority
+                    className="object-cover grayscale opacity-10" // Czarno-białe (grayscale) i niska przezroczystość (opacity-10)
+                />
+            </div>
+
+            <div className="w-full z-10 max-w-6xl mx-auto flex flex-col">
+
                 {/* NAGŁÓWEK */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
                     <div>
@@ -99,11 +111,10 @@ export default function RezerwacjePage() {
                                 <button
                                     key={mode}
                                     onClick={() => setViewMode(mode)}
-                                    className={`px-6 py-2 rounded-full font-[family-name:var(--font-oswald-bold)] tracking-widest uppercase text-sm transition-all ${
-                                        viewMode === mode 
-                                        ? "bg-pink-400 text-white shadow-sm" 
+                                    className={`px-6 py-2 rounded-full font-[family-name:var(--font-oswald-bold)] tracking-widest uppercase text-sm transition-all ${viewMode === mode
+                                        ? "bg-pink-400 text-white shadow-sm"
                                         : "text-slate-400 hover:text-pink-400"
-                                    }`}
+                                        }`}
                                 >
                                     {mode}
                                 </button>
@@ -116,7 +127,7 @@ export default function RezerwacjePage() {
                 {viewMode !== "Lista" && (
                     <div className="flex items-center justify-between mb-8 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
                         <div className="flex gap-2">
-                            <button 
+                            <button
                                 onClick={() => viewMode === "Kalendarz" ? changeMonth(-1) : changeDate(-1)}
                                 className="p-2 hover:bg-pink-50 text-pink-400 rounded-lg transition-colors border border-pink-100"
                             >
@@ -124,13 +135,13 @@ export default function RezerwacjePage() {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                                 </svg>
                             </button>
-                            <button 
+                            <button
                                 onClick={() => setSelectedDate(new Date())}
                                 className="px-4 py-2 hover:bg-pink-50 text-pink-400 rounded-lg transition-colors border border-pink-100 font-[family-name:var(--font-oswald-bold)] text-xs uppercase tracking-widest"
                             >
                                 Dzisiaj
                             </button>
-                            <button 
+                            <button
                                 onClick={() => viewMode === "Kalendarz" ? changeMonth(1) : changeDate(1)}
                                 className="p-2 hover:bg-pink-50 text-pink-400 rounded-lg transition-colors border border-pink-100"
                             >
@@ -141,7 +152,7 @@ export default function RezerwacjePage() {
                         </div>
 
                         <h2 className="text-2xl font-[family-name:var(--font-oswald-bold)] text-slate-700 capitalize">
-                            {viewMode === "Kalendarz" 
+                            {viewMode === "Kalendarz"
                                 ? selectedDate.toLocaleDateString("pl-PL", { month: 'long', year: 'numeric' })
                                 : formatDateLong(selectedDate)
                             }
@@ -160,19 +171,19 @@ export default function RezerwacjePage() {
 
                 {/* MODAL NOWEJ REZERWACJI */}
                 {isAddModalOpen && (
-                    <AddReservationModal 
-                        isOpen={isAddModalOpen} 
-                        onClose={() => setIsAddModalOpen(false)} 
+                    <AddReservationModal
+                        isOpen={isAddModalOpen}
+                        onClose={() => setIsAddModalOpen(false)}
                         initialDate={selectedDate.toLocaleDateString('en-CA')}
                     />
                 )}
 
                 {/* MODAL SZCZEGÓŁÓW WIZYTY */}
                 {selectedVisit && (
-                    <VisitDetailsModal 
-                        visit={selectedVisit} 
-                        isOpen={isDetailsModalOpen} 
-                        onClose={() => setIsDetailsModalOpen(false)} 
+                    <VisitDetailsModal
+                        visit={selectedVisit}
+                        isOpen={isDetailsModalOpen}
+                        onClose={() => setIsDetailsModalOpen(false)}
                     />
                 )}
             </div>
@@ -217,7 +228,7 @@ function AddReservationModal({ isOpen, onClose, initialDate }: { isOpen: boolean
         }
 
         // Prosta walidacja overlapu
-        const hasOverlap = visitsStore.filter(v => v.date === form.date).some(v => 
+        const hasOverlap = visitsStore.filter(v => v.date === form.date).some(v =>
             (form.time < v.endTime) && (form.endTime > v.time)
         );
 
@@ -259,8 +270,8 @@ function AddReservationModal({ isOpen, onClose, initialDate }: { isOpen: boolean
                         <label className="block text-sm font-[family-name:var(--font-oswald-bold)] text-slate-500 uppercase tracking-widest mb-1">Klientka (szukaj po nazwisku)</label>
                         {!selectedClient ? (
                             <div className="relative">
-                                <input 
-                                    type="text" 
+                                <input
+                                    type="text"
                                     placeholder="Wpisz min. 2 znaki..."
                                     value={searchQuery}
                                     onChange={e => setSearchQuery(e.target.value)}
@@ -269,9 +280,9 @@ function AddReservationModal({ isOpen, onClose, initialDate }: { isOpen: boolean
                                 {filteredClients.length > 0 && (
                                     <div className="absolute z-10 top-full left-0 right-0 bg-white shadow-xl rounded-b-xl border border-slate-100 max-h-40 overflow-y-auto py-2">
                                         {filteredClients.map(c => (
-                                            <button 
-                                                key={c.id} 
-                                                type="button" 
+                                            <button
+                                                key={c.id}
+                                                type="button"
                                                 onClick={() => { setSelectedClient(c); setSearchQuery(""); }}
                                                 className="w-full text-left px-4 py-2 hover:bg-pink-50 text-slate-700 font-[family-name:var(--font-oswald-light)]"
                                             >
@@ -292,11 +303,11 @@ function AddReservationModal({ isOpen, onClose, initialDate }: { isOpen: boolean
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-[family-name:var(--font-oswald-bold)] text-slate-500 uppercase tracking-widest mb-1">Data</label>
-                            <input type="date" value={form.date} onChange={e => setForm({...form, date: e.target.value})} className="w-full border-b-2 border-slate-200 py-2 text-slate-700 bg-transparent" />
+                            <input type="date" value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} className="w-full border-b-2 border-slate-200 py-2 text-slate-700 bg-transparent" />
                         </div>
                         <div>
                             <label className="block text-sm font-[family-name:var(--font-oswald-bold)] text-slate-500 uppercase tracking-widest mb-1">Usługa</label>
-                            <select value={form.service} onChange={e => setForm({...form, service: e.target.value})} className="w-full border-b-2 border-slate-200 py-2 bg-transparent">
+                            <select value={form.service} onChange={e => setForm({ ...form, service: e.target.value })} className="w-full border-b-2 border-slate-200 py-2 bg-transparent">
                                 {SERVICES.map(s => <option key={s} value={s}>{s}</option>)}
                             </select>
                         </div>
@@ -305,11 +316,11 @@ function AddReservationModal({ isOpen, onClose, initialDate }: { isOpen: boolean
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-[family-name:var(--font-oswald-bold)] text-slate-500 uppercase tracking-widest mb-1">Start</label>
-                            <input type="time" value={form.time} onChange={e => setForm({...form, time: e.target.value})} className="w-full border-b-2 border-slate-200 py-2" />
+                            <input type="time" value={form.time} onChange={e => setForm({ ...form, time: e.target.value })} className="w-full border-b-2 border-slate-200 py-2" />
                         </div>
                         <div>
                             <label className="block text-sm font-[family-name:var(--font-oswald-bold)] text-slate-500 uppercase tracking-widest mb-1">Koniec</label>
-                            <input type="time" value={form.endTime} onChange={e => setForm({...form, endTime: e.target.value})} className="w-full border-b-2 border-slate-200 py-2" />
+                            <input type="time" value={form.endTime} onChange={e => setForm({ ...form, endTime: e.target.value })} className="w-full border-b-2 border-slate-200 py-2" />
                         </div>
                     </div>
 
@@ -355,9 +366,8 @@ function ListView({ visits, getClientName, onVisitClick }: { visits: Visit[], ge
                                 {visit.service}
                             </td>
                             <td className="py-4 px-6 text-right">
-                                <span className={`px-3 py-1 rounded-full text-xs uppercase tracking-widest font-bold ${
-                                    visit.status === "odbyła się" ? "bg-emerald-100 text-emerald-700" : "bg-blue-100 text-blue-700"
-                                }`}>
+                                <span className={`px-3 py-1 rounded-full text-xs uppercase tracking-widest font-bold ${visit.status === "odbyła się" ? "bg-emerald-100 text-emerald-700" : "bg-blue-100 text-blue-700"
+                                    }`}>
                                     {visit.status}
                                 </span>
                             </td>
@@ -444,17 +454,17 @@ function DayView({ selectedDate, getVisitsForDate, getClientName, onVisitClick }
                 {dayVisits.map((visit) => {
                     const [h, m] = visit.time.split(":").map(Number);
                     const [eh, em] = visit.endTime.split(":").map(Number);
-                    
+
                     const startPos = ((h - 8) * HOUR_HEIGHT) + (m / 60 * HOUR_HEIGHT);
                     const durationInMin = (eh * 60 + em) - (h * 60 + m);
                     const height = (durationInMin / 60) * HOUR_HEIGHT;
 
                     return (
-                        <div 
+                        <div
                             key={visit.id}
                             onClick={() => onVisitClick(visit)}
-                            style={{ 
-                                top: `${startPos}px`, 
+                            style={{
+                                top: `${startPos}px`,
                                 height: `${height}px`,
                                 width: 'calc(100% - 2rem)',
                                 left: '1rem'

@@ -4,6 +4,7 @@ export interface Client {
   firstName: string;
   lastName: string;
   phone: string;
+  email: string;
   lastVisit?: string;
   otherInfo?: string;
 }
@@ -24,15 +25,49 @@ export interface Visit {
   status: VisitStatus;
 }
 
+export interface Service {
+  name: string;
+  description: string;
+  price: number;
+  duration: number;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  login: string;
+  password: string;
+}
+
 // ─── Mock data ──────────────────────────────────────────────────────────────
+
+export let usersStore: User[] = [
+  { id: "1", name: "Ewelina Madra", login: "ewelina", password: "ewelina1" },
+  { id: "2", name: "admin", login: "admin", password: "admin1" },
+];
 
 // Używamy let, aby umożliwić modyfikację w trakcie trwania sesji
 export let clientsStore: Client[] = [
-  { id: "1", firstName: "Anna", lastName: "Kowalska", phone: "123456789", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
-  { id: "2", firstName: "Katarzyna", lastName: "Nowak", phone: "987654321", lastVisit: "2025-11-02", otherInfo: "bardzo dlugie wlosy" },
-  { id: "3", firstName: "Magdalena", lastName: "Wiśniewska", phone: "555444333", lastVisit: "2025-09-20", otherInfo: "" },
-  { id: "4", firstName: "Zofia", lastName: "Wójcik", phone: "111222333", lastVisit: "2025-11-10", otherInfo: "" },
+  { id: "1", firstName: "Anna", lastName: "Kowalska", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
+  { id: "2", firstName: "Katarzyna", lastName: "Nowak", phone: "987654321", email: "[EMAIL_ADDRESS]", lastVisit: "2025-11-02", otherInfo: "bardzo dlugie wlosy" },
+  { id: "3", firstName: "Magdalena", lastName: "Wiśniewska", phone: "555444333", email: "[EMAIL_ADDRESS]", lastVisit: "2025-09-20", otherInfo: "" },
+  { id: "4", firstName: "Zofia", lastName: "Wójcik", phone: "111222333", email: "[EMAIL_ADDRESS]", lastVisit: "2025-11-10", otherInfo: "" },
+  { id: "5", firstName: "Ewelina", lastName: "Madra", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
+  { id: "6", firstName: "Krystyna", lastName: "Woźniak", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
+  { id: "7", firstName: "Olga", lastName: "Kasprzak", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
+  { id: "8", firstName: "Maria", lastName: "Wysocka", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
+  { id: "9", firstName: "Kasia", lastName: "Kowalczyk", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
+  { id: "10", firstName: "Asia", lastName: "Bąk", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
 ];
+
+export let servicesStore: Service[] = [
+  { name: "Strzyżenie damskie", description: "opis uslugi Strzyżenie damskie", price: 80, duration: 60 },
+  { name: "Strzyżenie męskie", description: "opis uslugi Strzyżenie męskie", price: 50, duration: 30 },
+  { name: "Koloryzacja jednolita", description: "opis uslugi Koloryzacja jednolita", price: 150, duration: 120 },
+  { name: "Sombre / Ombre / Baleyage", description: "opis uslugi Sombre / Ombre / Baleyage", price: 200, duration: 180 },
+  { name: "Modelowanie okazjonalne", description: "opis uslugi Modelowanie okazjonalne", price: 100, duration: 90 },
+];
+
 
 export let visitsStore: Visit[] = [
   // Anna Kowalska
@@ -92,8 +127,8 @@ export function getClientById(id: string): Client | undefined {
 
 export function searchClients(query: string): Client[] {
   const q = query.toLowerCase();
-  return clientsStore.filter(c => 
-    c.firstName.toLowerCase().includes(q) || 
+  return clientsStore.filter(c =>
+    c.firstName.toLowerCase().includes(q) ||
     c.lastName.toLowerCase().includes(q)
   );
 }

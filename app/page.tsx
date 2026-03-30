@@ -1,5 +1,6 @@
 import Image from "next/image";
 import GallerySection from "@/components/GallerySection";
+import { servicesStore } from "@/lib/mockData";
 
 export default function Home() {
   return (
@@ -83,7 +84,7 @@ export default function Home() {
 
         <div className="flex-1 p-8 md:p-12 flex flex-col justify-center">
           <h2 className="text-4xl font-bold tracking-wider text-pink-400 mb-6 font-[family-name:var(--font-oswald-bold)]">
-            Usługi
+            Cennik Usług
           </h2>
 
           {/* --- TABELA CENNIKA --- */}
@@ -102,40 +103,13 @@ export default function Home() {
               {/* ZAWARTOŚĆ TABELI */}
               <tbody className="font-[family-name:var(--font-oswald-light)] text-lg text-slate-700">
 
-                {/* Wiersz 1 */}
-                <tr className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                  <td className="py-3 pr-4">Strzyżenie damskie</td>
-                  <td className="py-3 px-4 text-center text-slate-500 text-base">60 min</td>
-                  <td className="py-3 font-[family-name:var(--font-oswald-bold)] text-pink-500 text-right tracking-wide">od 80 zł</td>
-                </tr>
-
-                {/* Wiersz 2 */}
-                <tr className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                  <td className="py-3 pr-4">Strzyżenie męskie</td>
-                  <td className="py-3 px-4 text-center text-slate-500 text-base">30 min</td>
-                  <td className="py-3 font-[family-name:var(--font-oswald-bold)] text-pink-500 text-right tracking-wide">50 zł</td>
-                </tr>
-
-                {/* Wiersz 3 */}
-                <tr className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                  <td className="py-3 pr-4">Koloryzacja jednolita</td>
-                  <td className="py-3 px-4 text-center text-slate-500 text-base">120 min</td>
-                  <td className="py-3 font-[family-name:var(--font-oswald-bold)] text-pink-500 text-right tracking-wide">od 150 zł</td>
-                </tr>
-
-                {/* Wiersz 4 */}
-                <tr className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                  <td className="py-3 pr-4">Sombre / Ombre / Baleyage</td>
-                  <td className="py-3 px-4 text-center text-slate-500 text-base">180 min</td>
-                  <td className="py-3 font-[family-name:var(--font-oswald-bold)] text-pink-500 text-right tracking-wide">od 250 zł</td>
-                </tr>
-
-                {/* Wiersz 5 */}
-                <tr className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                  <td className="py-3 pr-4">Modelowanie okazjonalne</td>
-                  <td className="py-3 px-4 text-center text-slate-500 text-base">45 min</td>
-                  <td className="py-3 font-[family-name:var(--font-oswald-bold)] text-pink-500 text-right tracking-wide">od 100 zł</td>
-                </tr>
+                {servicesStore.map((service) => (
+                  <tr key={service.name} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                    <td className="py-3 pr-4">{service.name}</td>
+                    <td className="py-3 px-4 text-center text-slate-500 text-base">{service.duration} min</td>
+                    <td className="py-3 font-[family-name:var(--font-oswald-bold)] text-pink-500 text-right tracking-wide">{service.price} zł</td>
+                  </tr>
+                ))}
 
               </tbody>
             </table>
