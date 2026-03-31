@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image"; // Importujemy komponent Image dla optymalizacji
+import Image from "next/image";
 import { clientsStore, formatPhone, type Client } from "@/lib/mockData";
 
 export default function KlientkiPage() {
@@ -177,7 +177,7 @@ export default function KlientkiPage() {
                     >
                         <div
                             className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col"
-                            onClick={(e) => e.stopPropagation()} // Zapobiega zamykaniu po kliknięciu w środek modala
+                            onClick={(e) => e.stopPropagation()}
                         >
                             <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-pink-50">
                                 <h3 className="text-2xl font-[family-name:var(--font-oswald-bold)] text-pink-500 tracking-wide">

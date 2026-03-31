@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   app:
     build: .
@@ -7,19 +6,28 @@ services:
       - "3000:3000"
     depends_on:
       - db
-    environment:
-      DATABASE_URL: postgresql://salon_user:[EMAIL_ADDRESS]:5432/salon_db
+    env_file:
+      - .env # <-- Aplikacja zasysa DATABASE_URL prosto z tego pliku
+
   db:
-    image: postgres:15
+    image: postgres:15-alpine
     container_name: salon_db
     environment:
-      POSTGRES_USER: salon_user
-      POSTGRES_PASSWORD: [ PASSWORD ]
-      POSTGRES_DB: salon_db
+      POSTGRES_USER_FILE: /run/secrets/db_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+      POSTGRES_DB_FILE: /run/secrets/db_name
     ports:
       - "5432:5432"
     volumes:
       - salon_db_data:/var/lib/postgresql/data
+    secrets:
+      - db_password
+      - db_user
+      - db_name
+
+volumes:
+  salon_db_data:
+
 
 secrets:
   db_password:
@@ -28,7 +36,3 @@ secrets:
     file: ./creds/db_user.txt
   db_name:
     file: ./creds/db_name.txt
-  db_host:
-    file: ./creds/db_host.txt
-  db_port:
-    file: ./creds/db_port.txt
