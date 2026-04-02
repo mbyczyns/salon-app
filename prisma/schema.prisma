@@ -8,40 +8,51 @@ datasource db {
 }
 
 model User {
-    id        String   @id @default(cuid())
-    email     String   @unique
-    name      String?
-    password  String
-    createdAt DateTime @default(now())
+    id          String   @id @default(cuid())
+    email       String   @unique
+    name        String?
+    password    String
+    createdAt   DateTime @default(now())
     permissions String
 }
 
 model Service {
-    id        String   @id @default(cuid())
-    name      String
-    price     Float
-    duration  Int
+    id          Int   @id @default(autoincrement())
+    name        String @unique
+    price       Float
+    duration    String
     description String?
+    
+    // Zależność: Jedna usługa może mieć wiele wizyt
+    appointments Appointment[] 
 }
 
 model Client {
-    id        Int   @id @default(autoincrement())
-    name      String
-    phone     String?
-    email     String?
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    notes     String?
+    id          Int      @id @default(autoincrement())
+    name        String
+    phone       String?
+    email       String?
+    createdAt   DateTime @default(now())
+    notes       String?
+    
+    // Zależność: Jeden klient może mieć wiele wizyt
+    appointments Appointment[] 
 }
 
 model Appointment {
-    id        String   @id @default(cuid())
-    clientId  String
-    serviceId String
-    date      DateTime
-    time      String
-    status    String   @default("scheduled")
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    notes     String?
+    id          Int   @id @default(autoincrement())
+    
+    // Tutaj zmieniliśmy na Int, żeby pasowało do ID Klienta!
+    clientId    Int      
+    client      Client   @relation(fields: [clientId], references: [id])
+    
+    serviceId   Int
+    service     Service  @relation(fields: [serviceId], references: [id])
+    
+    date        DateTime
+    time        String
+    status      String   @default("scheduled")
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    notes       String?
 }
