@@ -1,44 +1,60 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { clientsStore, formatPhone, type Client } from "@/lib/mockData";
+import { formatPhone } from "@/lib/mockData";
 
 export default function KlientkiPage() {
-    const [clients, setClients] = useState<Client[]>(clientsStore);
+    const [clients, setClients] = useState<any[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [clientToDelete, setClientToDelete] = useState<Client | null>(null);
 
-    const [newClient, setNewClient] = useState({ firstName: "", lastName: "", phone: "", email: "", lastVisit: "", otherInfo: "" });
+    useEffect(() => {
+        fetchClients();
+    }, []);
+
+    async function fetchClients() {
+        const res = await fetch("/api/klientki");
+        const data = await res.json();
+        setClients(data);
+    }
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [clientToDelete, setClientToDelete] = useState<any | null>(null);
+
+    const [newClient, setNewClient] = useState({ firstName: "", lastName: "", phone: "", email: "", otherInfo: "" });
 
     const filteredClients = clients.filter((client) => {
         const query = searchQuery.toLowerCase();
         return (
-            client.firstName.toLowerCase().includes(query) ||
-            client.lastName.toLowerCase().includes(query) ||
-            client.phone.includes(query)
+            client.name?.toLowerCase().includes(query) ||
+            (client.phone ?? "").includes(query)
         );
     });
 
-    const handleAddClient = (e: React.FormEvent) => {
+    const handleAddClient = async (e: React.FormEvent) => {
         e.preventDefault();
+
         if (!newClient.firstName || !newClient.lastName || !newClient.phone) return;
 
-        const addedClient: Client = {
-            id: Date.now().toString(),
-            firstName: newClient.firstName,
-            lastName: newClient.lastName,
-            phone: newClient.phone,
-            email: newClient.email,
-            lastVisit: newClient.lastVisit || "-",
-            otherInfo: newClient.otherInfo || "-",
-        };
+        const res = await fetch("/api/klientki", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: `${newClient.firstName} ${newClient.lastName}`,
+                phone: newClient.phone,
+                email: newClient.email,
+                notes: newClient.otherInfo
+            })
+        });
 
-        setClients([...clients, addedClient]);
-        setNewClient({ firstName: "", lastName: "", phone: "", email: "", lastVisit: "", otherInfo: "" });
-        setIsModalOpen(false);
+        if (res.ok) {
+            await fetchClients(); // 🔥 odświeżenie z bazy
+            setNewClient({ firstName: "", lastName: "", phone: "", email: "", otherInfo: "" });
+            setIsModalOpen(false);
+        }
     };
 
     return (
@@ -114,13 +130,10 @@ export default function KlientkiPage() {
                                 filteredClients.map((client) => (
                                     <tr key={client.id} className="border-b border-slate-50 hover:bg-pink-50/80 transition-colors group">
                                         <td className="py-4 px-6 font-medium text-slate-800">
-                                            {client.firstName} {client.lastName}
+                                            {client.name}
                                         </td>
                                         <td className="py-4 px-6 text-slate-500 font-[family-name:var(--font-oswald-bold)] tracking-wide">
                                             {formatPhone(client.phone)}
-                                        </td>
-                                        <td className="py-4 px-6 text-slate-500">
-                                            {client.lastVisit || "Brak danych"}
                                         </td>
                                         <td className="py-4 px-6 text-right">
                                             <div className="flex items-center justify-end gap-4">
@@ -263,17 +276,6 @@ export default function KlientkiPage() {
                                     />
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-[family-name:var(--font-oswald-bold)] text-slate-500 uppercase tracking-widest mb-1">
-                                        Data ostatniej wizyty (opcjonalnie)
-                                    </label>
-                                    <input
-                                        type="date"
-                                        value={newClient.lastVisit}
-                                        onChange={(e) => setNewClient({ ...newClient, lastVisit: e.target.value })}
-                                        className="w-full border-b-2 border-slate-200 py-2 focus:outline-none focus:border-pink-400 transition-colors font-[family-name:var(--font-oswald-light)] text-lg bg-transparent text-slate-700"
-                                    />
-                                </div>
 
                                 <div className="mt-4 pt-4 flex gap-3">
                                     <button
@@ -319,7 +321,7 @@ export default function KlientkiPage() {
                                 <p className="text-slate-600 font-[family-name:var(--font-oswald-light)] text-lg">
                                     Czy na pewno chcesz usunąć klientkę{" "}
                                     <span className="font-[family-name:var(--font-oswald-bold)] text-slate-800">
-                                        {clientToDelete.firstName} {clientToDelete.lastName}
+                                        {clientToDelete.name}
                                     </span>
                                     ? Tej operacji nie można cofnąć.
                                 </p>
@@ -331,8 +333,12 @@ export default function KlientkiPage() {
                                         Anuluj
                                     </button>
                                     <button
-                                        onClick={() => {
-                                            setClients(clients.filter(c => c.id !== clientToDelete.id));
+                                        onClick={async () => {
+                                            await fetch(`/api/klientki/${clientToDelete.id}`, {
+                                                method: "DELETE"
+                                            });
+
+                                            await fetchClients();
                                             setClientToDelete(null);
                                         }}
                                         className="flex-1 py-3 bg-red-500 text-white font-[family-name:var(--font-oswald-bold)] tracking-widest uppercase hover:bg-red-600 rounded-lg transition-colors shadow-sm"

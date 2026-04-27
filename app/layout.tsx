@@ -26,7 +26,7 @@ const font_oswald_light = Oswald({
 })
 
 export const metadata: Metadata = {
-  title: "Ewelina Mądra - Salon Fryzjerski",
+  title: "Ewelina Mądra-Czech - Salon Fryzjerski",
   description: "Najlepszy salon fryzjerski w mieście.",
 };
 
@@ -48,7 +48,7 @@ export default function RootLayout({
             <div className="flex gap-x-4 font-medium items-center text-slate-600">
               {/* Lewy róg teraz na pewno złapie czcionkę oswald-light */}
               <Link href="/" className="text-xl font-bold text-pink-400 hover:text-pink-500 transition font-[family-name:var(--font-oswald-light)]">
-                Ewelina Mądra
+                Ewelina Mądra-Czech
               </Link>
             </div>
 

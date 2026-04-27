@@ -35,7 +35,7 @@ export default function GallerySection() {
   return (
     <>
       {/* GALLERY SECTION */}
-      <div className="mt-12 w-full max-w-5xl mx-auto rounded-xl bg-white shadow-xl outline outline-black/5 z-10 pt-8 px-8 pb-2 md:pt-12 md:px-12 md:pb-4">
+      <div className="w-full max-w-6xl mx-auto rounded-xl bg-white shadow-xl outline outline-black/5 z-10 pt-8 px-8 pb-2 md:pt-12 md:px-12 md:pb-4">
         <div className="mb-5">
           <h2 className="text-4xl font-bold tracking-wider text-pink-400 mb-2 font-[family-name:var(--font-oswald-bold)]">
             Nasze Prace

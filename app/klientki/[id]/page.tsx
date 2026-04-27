@@ -1,6 +1,6 @@
 "use client";
 
-import { getClientById, getVisitsForClient, formatPhone, type Visit, subscribe, visitsStore } from "@/lib/mockData";
+import { formatPhone, type Visit } from "@/lib/mockData";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -14,18 +14,19 @@ export default function KlientkaDetailPage() {
   const [selectedVisit, setSelectedVisit] = useState<Visit | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const client = getClientById(id);
+  const [client, setClient] = useState<any>(null);
 
   useEffect(() => {
-    setVisits(getVisitsForClient(id));
-    
-    const unsubscribe = subscribe(() => {
-      setVisits(getVisitsForClient(id));
-    });
-    return unsubscribe;
+    fetch(`/api/klientki/${id}/details`)
+        .then(res => res.json())
+        .then(data => {
+            setClient(data.client);
+            setVisits(data.visits);
+        })
+        .catch(console.error);
   }, [id]);
 
-  if (!client) return notFound();
+  if (!client) return <div>Ładowanie...</div>;
 
   const upcoming = visits
     .filter((v) => v.status === "nadchodząca")

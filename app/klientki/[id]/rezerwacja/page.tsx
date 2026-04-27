@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { getClientById, formatPhone, addVisit, visitsStore } from "@/lib/mockData";
+import { formatPhone } from "@/lib/mockData";
 import Link from "next/link";
 
 const SERVICES = [
@@ -17,7 +17,17 @@ export default function RezerwacjaPage() {
   const router = useRouter();
   const params = useParams();
   const id = typeof params.id === "string" ? params.id : Array.isArray(params.id) ? params.id[0] : "";
-  const client = getClientById(id);
+  const [client, setClient] = useState<any>(null);
+  const [visits, setVisits] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch(`/api/klientki/${id}/details`)
+      .then(res => res.json())
+      .then(data => {
+        setClient(data.client);
+        setVisits(data.visits);
+      });
+  }, [id]);
 
   const [form, setForm] = useState({
     date: "",
@@ -34,13 +44,13 @@ export default function RezerwacjaPage() {
     return (
       <main className="min-h-screen flex items-center justify-center bg-[oklch(96.7%_0.001_286.375)]">
         <p className="text-slate-500 text-xl font-[family-name:var(--font-oswald-light)]">
-          Nie znaleziono klientki.
+          Pobieranie lub nie znaleziono klientki.
         </p>
       </main>
     );
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -55,7 +65,7 @@ export default function RezerwacjaPage() {
     }
 
     // Walidacja nakładania się wizyt
-    const sameDayVisits = visitsStore.filter((v: any) => v.date === form.date);
+    const sameDayVisits = visits.filter((v: any) => v.date === form.date);
 
     const hasOverlap = sameDayVisits.some((v: any) => {
       return (form.time < v.endTime) && (form.endTime > v.time);
@@ -66,19 +76,27 @@ export default function RezerwacjaPage() {
       return;
     }
 
-    // Dodanie do store'a
-    addVisit({
-      clientId: id,
-      date: form.date,
-      time: form.time,
-      endTime: form.endTime,
-      service: form.service,
-      notes: form.notes,
-      status: "nadchodząca"
+    // Dodanie przez API
+    const res = await fetch("/api/rezerwacje", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        clientId: parseInt(id),
+        date: form.date,
+        time: form.time,
+        endTime: form.endTime,
+        service: form.service,
+        notes: form.notes
+      })
     });
 
-    setSubmitted(true);
+    if (res.ok) {
+      setSubmitted(true);
+    } else {
+      setError("Wystąpił błąd komunikacji z bazą.");
+    }
   };
+
 
   if (submitted) {
     return (

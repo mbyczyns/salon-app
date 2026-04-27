@@ -1,8 +1,8 @@
 // Definicje typów
 export interface Client {
   id: string;
-  firstName: string;
-  lastName: string;
+  name: string;
+
   phone: string;
   email: string;
   lastVisit?: string;
@@ -48,16 +48,16 @@ export let usersStore: User[] = [
 
 // Używamy let, aby umożliwić modyfikację w trakcie trwania sesji
 export let clientsStore: Client[] = [
-  { id: "1", firstName: "Anna", lastName: "Kowalska", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
-  { id: "2", firstName: "Katarzyna", lastName: "Nowak", phone: "987654321", email: "[EMAIL_ADDRESS]", lastVisit: "2025-11-02", otherInfo: "bardzo dlugie wlosy" },
-  { id: "3", firstName: "Magdalena", lastName: "Wiśniewska", phone: "555444333", email: "[EMAIL_ADDRESS]", lastVisit: "2025-09-20", otherInfo: "" },
-  { id: "4", firstName: "Zofia", lastName: "Wójcik", phone: "111222333", email: "[EMAIL_ADDRESS]", lastVisit: "2025-11-10", otherInfo: "" },
-  { id: "5", firstName: "Ewelina", lastName: "Madra", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
-  { id: "6", firstName: "Krystyna", lastName: "Woźniak", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
-  { id: "7", firstName: "Olga", lastName: "Kasprzak", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
-  { id: "8", firstName: "Maria", lastName: "Wysocka", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
-  { id: "9", firstName: "Kasia", lastName: "Kowalczyk", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
-  { id: "10", firstName: "Asia", lastName: "Bąk", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
+  { id: "1", name: "Anna Kowalska", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
+  { id: "2", name: "Katarzyna Nowak", phone: "987654321", email: "[EMAIL_ADDRESS]", lastVisit: "2025-11-02", otherInfo: "bardzo dlugie wlosy" },
+  { id: "3", name: "Magdalena Wiśniewska", phone: "555444333", email: "[EMAIL_ADDRESS]", lastVisit: "2025-09-20", otherInfo: "" },
+  { id: "4", name: "Zofia Wójcik", phone: "111222333", email: "[EMAIL_ADDRESS]", lastVisit: "2025-11-10", otherInfo: "" },
+  { id: "5", name: "Ewelina Madra", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
+  { id: "6", name: "Krystyna Woźniak", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
+  { id: "7", name: "Olga Kasprzak", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
+  { id: "8", name: "Maria Wysocka", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
+  { id: "9", name: "Kasia Kowalczyk", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
+  { id: "10", name: "Asia Bąk", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
 ];
 
 export let servicesStore: Service[] = [
@@ -102,40 +102,6 @@ function notify() {
   listeners.forEach(l => l());
 }
 
-// ─── Akcje ───────────────────────────────────────────────────────────────────
-
-export function addVisit(visitData: Omit<Visit, "id">) {
-  const newVisit: Visit = {
-    ...visitData,
-    id: `v${Date.now()}`
-  };
-  visitsStore = [...visitsStore, newVisit];
-  notify();
-  return newVisit;
-}
-
-export function updateVisit(id: string, updates: Partial<Visit>) {
-  visitsStore = visitsStore.map(v => v.id === id ? { ...v, ...updates } : v);
-  notify();
-}
-
-// ─── Helpery ─────────────────────────────────────────────────────────────────
-
-export function getClientById(id: string): Client | undefined {
-  return clientsStore.find((c) => c.id === id);
-}
-
-export function searchClients(query: string): Client[] {
-  const q = query.toLowerCase();
-  return clientsStore.filter(c =>
-    c.firstName.toLowerCase().includes(q) ||
-    c.lastName.toLowerCase().includes(q)
-  );
-}
-
-export function getVisitsForClient(clientId: string): Visit[] {
-  return visitsStore.filter((v) => v.clientId === clientId);
-}
 
 export function formatPhone(phone: string): string {
   const digits = phone.replace(/\D/g, "");

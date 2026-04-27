@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { visitsStore, clientsStore, type Visit, addVisit, subscribe, searchClients, type Client } from "@/lib/mockData";
+import type { Client, Visit } from "@/lib/mockData";
 import Image from "next/image"
 import VisitDetailsModal from "@/components/VisitDetailsModal";
 
@@ -22,26 +22,23 @@ export default function RezerwacjePage() {
     const [selectedVisit, setSelectedVisit] = useState<Visit | null>(null);
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
-    // Używamy stanu do wymuszenia re-renderu przy zmianach w store
-    const [visits, setVisits] = useState(visitsStore);
 
-    useEffect(() => {
-        // Subskrypcja na zmiany w mockData (prosta reaktywność)
-        const unsubscribe = subscribe(() => {
-            setVisits([...visitsStore]);
-        });
-        return unsubscribe;
-    }, []);
+    const [visits, setVisits] = useState<Visit[]>([]);
+
+    async function fetchVisits() {
+        try {
+            const res = await fetch("/api/rezerwacje");
+            if (!res.ok) throw new Error("Błąd pobierania wizyt");
+            const data = await res.json();
+            setVisits(data);
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     const handleVisitClick = (visit: Visit) => {
         setSelectedVisit(visit);
         setIsDetailsModalOpen(true);
-    };
-
-    // Helper: Pobierz nazwę klienta po ID
-    const getClientName = (clientId: string) => {
-        const client = clientsStore.find(c => c.id === clientId);
-        return client ? `${client.firstName} ${client.lastName}` : "Nieznany Klient";
     };
 
     // Helper: Formatuj datę do wyświetlenia
@@ -66,6 +63,24 @@ export default function RezerwacjePage() {
         const newDate = new Date(selectedDate);
         newDate.setMonth(newDate.getMonth() + months);
         setSelectedDate(newDate);
+    };
+
+    const [clients, setClients] = useState<Client[]>([]);
+
+    useEffect(() => {
+        fetchVisits();
+        fetchClients();
+    }, []);
+
+    async function fetchClients() {
+        const res = await fetch("/api/klientki");
+        const data = await res.json();
+        setClients(data);
+    }
+
+    const getClientName = (clientId: string) => {
+        const client = clients.find((c: any) => c.id === clientId);
+        return client ? client.name : "Nieznany klient";
     };
 
     return (
@@ -175,6 +190,8 @@ export default function RezerwacjePage() {
                         isOpen={isAddModalOpen}
                         onClose={() => setIsAddModalOpen(false)}
                         initialDate={selectedDate.toLocaleDateString('en-CA')}
+                        clients={clients}
+                        onSuccess={fetchVisits}
                     />
                 )}
 
@@ -193,7 +210,19 @@ export default function RezerwacjePage() {
 
 // ─── MODAL REZERWACJI ─────────────────────────────────────────────────────────
 
-function AddReservationModal({ isOpen, onClose, initialDate }: { isOpen: boolean, onClose: () => void, initialDate: string }) {
+function AddReservationModal({
+    isOpen,
+    onClose,
+    initialDate,
+    clients,
+    onSuccess
+}: {
+    isOpen: boolean,
+    onClose: () => void,
+    initialDate: string,
+    clients: Client[],
+    onSuccess: () => void
+}) {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedClient, setSelectedClient] = useState<Client | null>(null);
     const [form, setForm] = useState({
@@ -207,10 +236,12 @@ function AddReservationModal({ isOpen, onClose, initialDate }: { isOpen: boolean
 
     const filteredClients = useMemo(() => {
         if (searchQuery.length < 2) return [];
-        return searchClients(searchQuery);
-    }, [searchQuery]);
+        return clients.filter((c: any) =>
+            c.name?.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }, [searchQuery, clients]);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
 
@@ -227,26 +258,29 @@ function AddReservationModal({ isOpen, onClose, initialDate }: { isOpen: boolean
             return;
         }
 
-        // Prosta walidacja overlapu
-        const hasOverlap = visitsStore.filter(v => v.date === form.date).some(v =>
-            (form.time < v.endTime) && (form.endTime > v.time)
-        );
 
-        if (hasOverlap) {
-            setError("Ten termin jest już zajęty.");
+
+        const res = await fetch("/api/rezerwacje", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                clientId: selectedClient.id,
+                date: form.date,
+                time: form.time,
+                endTime: form.endTime,
+                service: form.service,
+                notes: form.notes,
+            }),
+        });
+
+        if (!res.ok) {
+            setError("Błąd zapisu wizyty");
             return;
         }
 
-        addVisit({
-            clientId: selectedClient.id,
-            date: form.date,
-            time: form.time,
-            endTime: form.endTime,
-            service: form.service,
-            notes: form.notes,
-            status: "nadchodząca"
-        });
-
+        onSuccess();
         onClose();
     };
 
@@ -279,14 +313,14 @@ function AddReservationModal({ isOpen, onClose, initialDate }: { isOpen: boolean
                                 />
                                 {filteredClients.length > 0 && (
                                     <div className="absolute z-10 top-full left-0 right-0 bg-white shadow-xl rounded-b-xl border border-slate-100 max-h-40 overflow-y-auto py-2">
-                                        {filteredClients.map(c => (
+                                        {filteredClients.map((c: any) => (
                                             <button
                                                 key={c.id}
                                                 type="button"
                                                 onClick={() => { setSelectedClient(c); setSearchQuery(""); }}
                                                 className="w-full text-left px-4 py-2 hover:bg-pink-50 text-slate-700 font-[family-name:var(--font-oswald-light)]"
                                             >
-                                                {c.firstName} <span className="font-bold">{c.lastName}</span>
+                                                {c.name}
                                             </button>
                                         ))}
                                     </div>
@@ -294,7 +328,7 @@ function AddReservationModal({ isOpen, onClose, initialDate }: { isOpen: boolean
                             </div>
                         ) : (
                             <div className="flex justify-between items-center bg-pink-50 p-3 rounded-lg border border-pink-100">
-                                <span className="font-[family-name:var(--font-oswald-bold)] text-pink-600">{selectedClient.firstName} {selectedClient.lastName}</span>
+                                <span className="font-[family-name:var(--font-oswald-bold)] text-pink-600">{(selectedClient as any).name}</span>
                                 <button type="button" onClick={() => setSelectedClient(null)} className="text-xs text-slate-400 hover:text-red-500 uppercase font-bold px-2 py-1">Zmień</button>
                             </div>
                         )}

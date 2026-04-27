@@ -1,16 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { type Visit, getClientById, updateVisit, formatPhone } from "@/lib/mockData";
+import { formatPhone } from "@/lib/mockData";
 
-interface VisitDetailsModalProps {
-  visit: Visit;
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export default function VisitDetailsModal({ visit, isOpen, onClose }: VisitDetailsModalProps) {
-  const client = getClientById(visit.clientId);
+export default function VisitDetailsModal({ visit, isOpen, onClose }: any) {
   
   const [form, setForm] = useState({
     price: visit.price?.toString() || "",
@@ -30,14 +23,18 @@ export default function VisitDetailsModal({ visit, isOpen, onClose }: VisitDetai
 
   if (!isOpen) return null;
 
-  const handleSave = () => {
-    updateVisit(visit.id, {
-      price: form.price ? parseFloat(form.price) : undefined,
-      afterNotes: form.afterNotes,
-      photos: form.photos,
-      status: "odbyła się" // Jeśli zapisujemy detale z wizyty nadchodzącej, oznaczamy jako zakończoną
+  const handleSave = async () => {
+    await fetch(`/api/rezerwacje/${visit.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            status: "odbyła się",
+            notes: form.afterNotes // Możesz zaktualizowac model by pomiescic ceny
+        })
     });
+    // Opcjonalnie tutaj można wymusić przeładowanie okna
     setIsEditing(false);
+    onClose();
   };
 
   const handleFinishVisit = () => {
@@ -77,11 +74,11 @@ export default function VisitDetailsModal({ visit, isOpen, onClose }: VisitDetai
           <div className="flex flex-col md:flex-row gap-8 items-start">
             <div className="flex-1 flex gap-4 items-center">
               <div className="w-16 h-16 rounded-2xl bg-pink-100 flex items-center justify-center text-2xl font-[family-name:var(--font-oswald-bold)] text-pink-400">
-                {client?.firstName[0]}{client?.lastName[0]}
+                {visit.clientName?.[0]}
               </div>
               <div>
-                <h4 className="text-xl font-[family-name:var(--font-oswald-bold)] text-slate-800">{client?.firstName} {client?.lastName}</h4>
-                <p className="text-slate-500 font-[family-name:var(--font-oswald-light)]">{client ? formatPhone(client.phone) : "Brak telefonu"}</p>
+                <h4 className="text-xl font-[family-name:var(--font-oswald-bold)] text-slate-800">{visit.clientName}</h4>
+                <p className="text-slate-500 font-[family-name:var(--font-oswald-light)]">Brak telefonu</p>
               </div>
             </div>
             <div className="flex-1 bg-slate-50 p-4 rounded-2xl border border-slate-100">
@@ -160,11 +157,11 @@ export default function VisitDetailsModal({ visit, isOpen, onClose }: VisitDetai
                   </div>
                   
                   <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
-                    {form.photos.map((url, idx) => (
+                    {form.photos.map((url: string, idx: number) => (
                       <div key={idx} className="aspect-square rounded-xl overflow-hidden shadow-sm relative group">
                         <img src={url} alt="Visit photo" className="w-full h-full object-cover transition-transform group-hover:scale-110" />
                         <button 
-                          onClick={() => setForm(prev => ({...prev, photos: prev.photos.filter((_, i) => i !== idx)}))}
+                          onClick={() => setForm(prev => ({...prev, photos: prev.photos.filter((_: any, i: number) => i !== idx)}))}
                           className="absolute top-1 right-1 bg-black/40 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
