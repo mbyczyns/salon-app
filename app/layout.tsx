@@ -19,10 +19,10 @@ const font_oswald_bold = Oswald({
   variable: '--font-oswald-bold'
 })
 
-const font_oswald_light = Oswald({
+const font_oswald_regular = Oswald({
   weight: "400",
   subsets: ["latin"],
-  variable: '--font-oswald-light'
+  variable: '--font-oswald-regular'
 })
 
 export const metadata: Metadata = {
@@ -38,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="pl">
       {/* POPRAWKA: Dodano zmienne Oswalda do tagu body */}
-      <body className={`${inter.className} ${font_petit.variable} ${font_oswald_light.variable} ${font_oswald_bold.variable} bg-white text-slate-900`}>
+      <body className={`${inter.className} ${font_petit.variable} ${font_oswald_regular.variable} ${font_oswald_bold.variable} bg-white text-slate-900`}>
 
         {/* --- PASEK NAWIGACJI --- */}
         <nav className="sticky top-0 z-50 w-full bg-[oklch(96.7%_0.001_286.375)] backdrop-blur-md shadow-sm">
@@ -47,7 +47,7 @@ export default function RootLayout({
             {/* Logo + Nazwa po lewej stronie */}
             <div className="flex gap-x-4 font-medium items-center text-slate-600">
               {/* Lewy róg teraz na pewno złapie czcionkę oswald-light */}
-              <Link href="/" className="text-xl font-bold text-pink-400 hover:text-pink-500 transition font-[family-name:var(--font-oswald-light)]">
+              <Link href="/" className="text-xl font-bold hover:text-pink-500 transition font-[family-name:var(--font-oswald-regular)]">
                 Ewelina Mądra-Czech
               </Link>
             </div>
@@ -59,26 +59,26 @@ export default function RootLayout({
 
               <Link
                 href="/klientki"
-                className="ml-4 px-3 py-1.5 text-pink-500 hover:text-slate-700 transition font-[family-name:var(--font-oswald-bold)] tracking-wide"
+                className="ml-4 px-3 py-1.5 hover:text-slate-700 transition font-[family-name:var(--font-oswald-bold)] tracking-wide"
               >
                 Klientki
               </Link>
               <Link
                 href="/rezerwacje"
-                className="ml-4 px-3 py-1.5 text-pink-500 hover:text-slate-700 transition font-[family-name:var(--font-oswald-bold)] tracking-wide"
+                className="ml-4 px-3 py-1.5 hover:text-slate-700 transition font-[family-name:var(--font-oswald-bold)] tracking-wide"
               >
                 Rezerwacje
               </Link>
 
               <Link
                 href="/stats"
-                className="ml-4 px-3 py-1.5 text-pink-500 hover:text-slate-700 transition font-[family-name:var(--font-oswald-bold)] tracking-wide"
+                className="ml-4 px-3 py-1.5 hover:text-slate-700 transition font-[family-name:var(--font-oswald-bold)] tracking-wide"
               >
                 Statystyki
               </Link>
               <Link
                 href="/admin"
-                className="ml-4 rounded-full bg-pink-400 px-5 py-1.5 text-white hover:bg-slate-700 transition font-[family-name:var(--font-oswald-bold)] tracking-wide"
+                className="ml-4 rounded-full bg-slate-600 px-5 py-1.5 text-white hover:bg-slate-700 transition font-[family-name:var(--font-oswald-bold)] tracking-wide"
               >
                 Panel CRM
               </Link>

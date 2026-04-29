@@ -37,11 +37,11 @@ export default function GallerySection() {
       {/* GALLERY SECTION */}
       <div className="w-full max-w-6xl mx-auto rounded-xl bg-white shadow-xl outline outline-black/5 z-10 pt-8 px-8 pb-2 md:pt-12 md:px-12 md:pb-4">
         <div className="mb-5">
-          <h2 className="text-4xl font-bold tracking-wider text-pink-400 mb-2 font-[family-name:var(--font-oswald-bold)]">
-            Nasze Prace
+          <h2 className="text-4xl font-bold tracking-wider text-center text-slate-700 mb-2 font-[family-name:var(--font-oswald-bold)]">
+            Galeria
           </h2>
-          <p className="text-slate-600 font-[family-name:var(--font-oswald-light)] text-xl tracking-wide">
-            Zobacz metamorfozy naszych klientek oraz wnętrze
+          <p className="text-slate-500 font-[family-name:var(--font-oswald-light)] text-xl tracking-wide text-center">
+            Zobacz metamorfozy klientek oraz wnętrze salonu
           </p>
         </div>
 
@@ -73,7 +73,7 @@ export default function GallerySection() {
         <div className="my-4 md:my-4 flex justify-center">
           <button
             onClick={() => setIsModalOpen(true)}
-            className="rounded-full border-2 border-pink-400 px-8 py-3 text-pink-500 font-[family-name:var(--font-oswald-bold)] tracking-widest uppercase hover:bg-pink-400 hover:text-white transition-all duration-300 shadow-sm hover:shadow-md"
+            className="rounded-full border-2 border-slate-700 px-8 py-3 text-slate-700 font-[family-name:var(--font-oswald-bold)] tracking-widest uppercase hover:bg-slate-700 hover:text-white transition-all duration-300 shadow-sm hover:shadow-md"
           >
             Zobacz pełną galerię
           </button>
@@ -93,7 +93,7 @@ export default function GallerySection() {
             {/* Modal Header */}
             <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white z-10 sticky top-0">
               <div>
-                <h3 className="text-3xl font-[family-name:var(--font-oswald-bold)] text-pink-400 tracking-wide mb-3 md:mb-0">
+                <h3 className="text-3xl font-[family-name:var(--font-oswald-bold)] text-slate-700 tracking-wide mb-3 md:mb-0">
                   Galeria
                 </h3>
               </div>
@@ -105,8 +105,8 @@ export default function GallerySection() {
                     key={category}
                     onClick={() => setActiveCategory(category)}
                     className={`px-4 py-1.5 rounded-full font-[family-name:var(--font-oswald-bold)] tracking-widest uppercase text-xs border-2 transition-all duration-300 ${activeCategory === category
-                      ? "bg-pink-400 text-white border-pink-400 shadow-sm"
-                      : "bg-transparent text-slate-400 border-slate-200 hover:border-pink-300 hover:text-pink-400"
+                      ? "bg-slate-700 text-white border-slate-700 shadow-sm"
+                      : "bg-transparent text-slate-400 border-slate-200 hover:border-slate-300 hover:text-slate-400"
                       }`}
                   >
                     {category}
@@ -116,7 +116,7 @@ export default function GallerySection() {
 
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="p-2 self-start md:self-center text-slate-400 hover:text-pink-500 hover:bg-pink-50 rounded-full transition-colors flex items-center justify-center -mt-2 -mr-2 md:m-0"
+                className="p-2 self-start md:self-center text-slate-400 hover:text-slate-500 hover:bg-slate-50 rounded-full transition-colors flex items-center justify-center -mt-2 -mr-2 md:m-0"
                 aria-label="Zamknij galerię"
               >
                 <svg

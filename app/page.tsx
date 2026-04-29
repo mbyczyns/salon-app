@@ -24,7 +24,7 @@ export default function Home() {
             className="rounded-full shadow-md mb-20 md:mb-15"
           />
           <h2 className="text-5xl md:text-7xl drop-shadow-lg p-6">
-            <span className="font-[family-name:var(--font-oswald-bold)] font-bold text-pink-400 tracking-wide">
+            <span className="font-[family-name:var(--font-oswald-bold)] font-bold text-slate-700 tracking-wide">
               Ewelina Mądra-Czech
             </span>
             {" "}
@@ -54,7 +54,7 @@ export default function Home() {
 
         {/* TEKST PO PRAWEJ */}
         <div className="flex-1 p-8 md:p-14 flex flex-col justify-center">
-          <h2 className="text-4xl font-bold tracking-wider justify-center text-pink-400 mb-6 font-[family-name:var(--font-oswald-bold)]">
+          <h2 className="text-4xl font-bold tracking-wider text-center text-slate-700 mb-6 font-[family-name:var(--font-oswald-bold)]">
             O mnie
           </h2>
           <p className="text-justify text-lg font-[family-name:var(--font-oswald-light)] text-slate-600 leading-relaxed">
@@ -82,11 +82,11 @@ export default function Home() {
 
           {/* Wyśrodkowany tekst na zdjęciu */}
           <div className="relative z-10 p-6 flex flex-col items-center">
-            <span className="inline-block px-5 py-1.5 bg-pink-500 text-white font-[family-name:var(--font-oswald-bold)] text-sm tracking-widest rounded-full uppercase mb-4 shadow-lg">
+            <span className="inline-block px-5 py-1.5 bg-slate-500 text-white font-[family-name:var(--font-oswald-bold)] text-sm tracking-widest rounded-full uppercase mb-4 shadow-lg">
               Nowość
             </span>
             <h2 className="text-5xl md:text-6xl font-bold tracking-wider text-white font-[family-name:var(--font-oswald-bold)] drop-shadow-lg">
-              Strefa <span className="text-pink-300">Head Spa</span>
+              Strefa <span className="text-slate-300">Head Spa</span>
             </h2>
           </div>
         </div>
@@ -104,10 +104,10 @@ export default function Home() {
       <div className="mt-16 w-full mx-auto flex flex-col max-w-6xl rounded-2xl bg-white shadow-xl outline outline-black/5 z-10 overflow-hidden">
         <div className="p-8 md:p-14 flex flex-col">
           <div className="text-center mb-10">
-            <h2 className="text-4xl font-bold tracking-wider text-pink-400 font-[family-name:var(--font-oswald-bold)]">
+            <h2 className="text-4xl font-bold tracking-wider text-center text-slate-700 mb-2 font-[family-name:var(--font-oswald-bold)]">
               Cennik Usług
             </h2>
-            <p className="text-slate-400 mt-2 font-[family-name:var(--font-oswald-light)]">Sprawdź naszą ofertę podstawową</p>
+            <p className="text-slate-500 font-[family-name:var(--font-oswald-light)] text-xl tracking-wide text-center">Sprawdź naszą ofertę podstawową</p>
           </div>
 
           <div className="w-full">
@@ -124,7 +124,7 @@ export default function Home() {
                   <tr key={service.name} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
                     <td className="py-4 pr-4">{service.name}</td>
                     <td className="py-4 px-4 text-center text-slate-400 text-base">{service.duration} min</td>
-                    <td className="py-4 font-[family-name:var(--font-oswald-bold)] text-pink-500 text-right tracking-wide">{service.price} zł</td>
+                    <td className="py-4 font-[family-name:var(--font-oswald-bold)] text-slate-400 text-right tracking-wide">{service.price} zł</td>
                   </tr>
                 ))}
               </tbody>
@@ -148,19 +148,19 @@ export default function Home() {
 
         {/* DANE KONTAKTOWE */}
         <div className="flex-1 p-8 md:p-14 flex flex-col justify-center">
-          <h2 className="text-4xl font-bold tracking-wider text-pink-400 mb-8 font-[family-name:var(--font-oswald-bold)]">
+          <h2 className="text-4xl font-bold tracking-wider text-center text-slate-700 mb-6 font-[family-name:var(--font-oswald-bold)]">
             Kontakt
           </h2>
           <div className="space-y-6 font-[family-name:var(--font-oswald-light)] text-xl text-slate-600 mb-12">
             <div className="flex items-center gap-4">
               <span className="text-3xl">📞</span>
-              <a href="tel:+48123456789" className="hover:text-pink-500 transition-colors">
+              <a href="tel:+48123456789" className="hover:text-slate-500 transition-colors">
                 +48 123 456 789
               </a>
             </div>
             <div className="flex items-center gap-4">
               <span className="text-3xl">✉️</span>
-              <a href="mailto:kontakt@salonewelina.pl" className="hover:text-pink-500 transition-colors">
+              <a href="mailto:kontakt@salonewelina.pl" className="hover:text-slate-500 transition-colors">
                 kontakt@salonewelina.pl
               </a>
             </div>
@@ -174,13 +174,13 @@ export default function Home() {
             Znajdź nas w sieci
           </h3>
           <div className="flex flex-wrap gap-3">
-            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="px-6 py-2.5 bg-slate-50 hover:bg-pink-50 text-slate-600 hover:text-pink-500 rounded-full transition-colors font-[family-name:var(--font-oswald-bold)] text-sm tracking-wider uppercase border border-slate-100">
+            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="px-6 py-2.5 bg-slate-50 hover:bg-slate-50 text-slate-600 hover:text-slate-500 rounded-full transition-colors font-[family-name:var(--font-oswald-bold)] text-sm tracking-wider uppercase border border-slate-100">
               Instagram
             </a>
-            <a href="https://facebook.com" target="_blank" rel="noreferrer" className="px-6 py-2.5 bg-slate-50 hover:bg-pink-50 text-slate-600 hover:text-pink-500 rounded-full transition-colors font-[family-name:var(--font-oswald-bold)] text-sm tracking-wider uppercase border border-slate-100">
+            <a href="https://facebook.com" target="_blank" rel="noreferrer" className="px-6 py-2.5 bg-slate-50 hover:bg-slate-50 text-slate-600 hover:text-slate-500 rounded-full transition-colors font-[family-name:var(--font-oswald-bold)] text-sm tracking-wider uppercase border border-slate-100">
               Facebook
             </a>
-            <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="px-6 py-2.5 bg-slate-50 hover:bg-pink-50 text-slate-600 hover:text-pink-500 rounded-full transition-colors font-[family-name:var(--font-oswald-bold)] text-sm tracking-wider uppercase border border-slate-100">
+            <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="px-6 py-2.5 bg-slate-50 hover:bg-slate-50 text-slate-600 hover:text-slate-500 rounded-full transition-colors font-[family-name:var(--font-oswald-bold)] text-sm tracking-wider uppercase border border-slate-100">
               TikTok
             </a>
           </div>
