@@ -102,10 +102,10 @@ export default function RezerwacjePage() {
                 {/* NAGŁÓWEK */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
                     <div>
-                        <h1 className="text-4xl md:text-5xl font-bold tracking-wider text-pink-400 mb-2 font-[family-name:var(--font-oswald-bold)] drop-shadow-sm">
+                        <h1 className="text-4xl md:text-5xl font-bold tracking-wider text-slate-600 mb-2 font-[family-name:var(--font-oswald-bold)] drop-shadow-sm">
                             Kalendarz Rezerwacji
                         </h1>
-                        <p className="text-lg text-slate-500 font-[family-name:var(--font-oswald-light)]">
+                        <p className="text-lg text-slate-600 font-[family-name:var(--font-oswald-light)]">
                             Zarządzaj wizytami i planuj swój czas pracy.
                         </p>
                     </div>
@@ -113,7 +113,7 @@ export default function RezerwacjePage() {
                     <div className="flex flex-col md:flex-row items-center gap-4">
                         <button
                             onClick={() => setIsAddModalOpen(true)}
-                            className="w-full md:w-auto rounded-full bg-pink-400 px-6 py-3 text-white font-[family-name:var(--font-oswald-bold)] tracking-widest uppercase hover:bg-pink-500 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                            className="w-full md:w-auto rounded-full bg-slate-600 px-6 py-3 text-white font-[family-name:var(--font-oswald-bold)] tracking-widest uppercase hover:bg-slate-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -127,8 +127,8 @@ export default function RezerwacjePage() {
                                     key={mode}
                                     onClick={() => setViewMode(mode)}
                                     className={`px-6 py-2 rounded-full font-[family-name:var(--font-oswald-bold)] tracking-widest uppercase text-sm transition-all ${viewMode === mode
-                                        ? "bg-pink-400 text-white shadow-sm"
-                                        : "text-slate-400 hover:text-pink-400"
+                                        ? "bg-slate-400 text-white shadow-sm"
+                                        : "text-slate-400 hover:text-slate-400"
                                         }`}
                                 >
                                     {mode}
@@ -144,7 +144,7 @@ export default function RezerwacjePage() {
                         <div className="flex gap-2">
                             <button
                                 onClick={() => viewMode === "Kalendarz" ? changeMonth(-1) : changeDate(-1)}
-                                className="p-2 hover:bg-pink-50 text-pink-400 rounded-lg transition-colors border border-pink-100"
+                                className="p-2 hover:bg-slate-50 text-slate-400 rounded-lg transition-colors border border-slate-100"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -152,13 +152,13 @@ export default function RezerwacjePage() {
                             </button>
                             <button
                                 onClick={() => setSelectedDate(new Date())}
-                                className="px-4 py-2 hover:bg-pink-50 text-pink-400 rounded-lg transition-colors border border-pink-100 font-[family-name:var(--font-oswald-bold)] text-xs uppercase tracking-widest"
+                                className="px-4 py-2 hover:bg-slate-50 text-slate-400 rounded-lg transition-colors border border-slate-100 font-[family-name:var(--font-oswald-bold)] text-xs uppercase tracking-widest"
                             >
                                 Dzisiaj
                             </button>
                             <button
                                 onClick={() => viewMode === "Kalendarz" ? changeMonth(1) : changeDate(1)}
-                                className="p-2 hover:bg-pink-50 text-pink-400 rounded-lg transition-colors border border-pink-100"
+                                className="p-2 hover:bg-slate-50 text-slate-400 rounded-lg transition-colors border border-slate-100"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
@@ -287,9 +287,9 @@ function AddReservationModal({
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={onClose}>
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
-                <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-pink-50">
-                    <h3 className="text-2xl font-[family-name:var(--font-oswald-bold)] text-pink-500 tracking-wide">Nowa Rezerwacja</h3>
-                    <button onClick={onClose} className="p-2 text-slate-400 hover:text-pink-500 rounded-full transition-colors flex items-center justify-center bg-white">
+                <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                    <h3 className="text-2xl font-[family-name:var(--font-oswald-bold)] text-slate-500 tracking-wide">Nowa Rezerwacja</h3>
+                    <button onClick={onClose} className="p-2 text-slate-400 hover:text-slate-500 rounded-full transition-colors flex items-center justify-center bg-white">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -309,7 +309,7 @@ function AddReservationModal({
                                     placeholder="Wpisz min. 2 znaki..."
                                     value={searchQuery}
                                     onChange={e => setSearchQuery(e.target.value)}
-                                    className="w-full border-b-2 border-slate-200 py-2 focus:outline-none focus:border-pink-400 transition-colors font-[family-name:var(--font-oswald-light)] text-lg placeholder-slate-300"
+                                    className="w-full border-b-2 border-slate-200 py-2 focus:outline-none focus:border-slate-400 transition-colors font-[family-name:var(--font-oswald-light)] text-lg placeholder-slate-300"
                                 />
                                 {filteredClients.length > 0 && (
                                     <div className="absolute z-10 top-full left-0 right-0 bg-white shadow-xl rounded-b-xl border border-slate-100 max-h-40 overflow-y-auto py-2">
@@ -318,7 +318,7 @@ function AddReservationModal({
                                                 key={c.id}
                                                 type="button"
                                                 onClick={() => { setSelectedClient(c); setSearchQuery(""); }}
-                                                className="w-full text-left px-4 py-2 hover:bg-pink-50 text-slate-700 font-[family-name:var(--font-oswald-light)]"
+                                                className="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 font-[family-name:var(--font-oswald-light)]"
                                             >
                                                 {c.name}
                                             </button>
@@ -327,9 +327,9 @@ function AddReservationModal({
                                 )}
                             </div>
                         ) : (
-                            <div className="flex justify-between items-center bg-pink-50 p-3 rounded-lg border border-pink-100">
-                                <span className="font-[family-name:var(--font-oswald-bold)] text-pink-600">{(selectedClient as any).name}</span>
-                                <button type="button" onClick={() => setSelectedClient(null)} className="text-xs text-slate-400 hover:text-red-500 uppercase font-bold px-2 py-1">Zmień</button>
+                            <div className="flex justify-between items-center bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                <span className="font-[family-name:var(--font-oswald-bold)] text-slate-600">{(selectedClient as any).name}</span>
+                                <button type="button" onClick={() => setSelectedClient(null)} className="text-xs text-slate-400 hover:text-slate-600 uppercase font-bold px-2 py-1">Zmień</button>
                             </div>
                         )}
                     </div>
@@ -360,7 +360,7 @@ function AddReservationModal({
 
                     <div className="mt-4 flex gap-3">
                         <button type="button" onClick={onClose} className="flex-1 py-3 text-slate-500 font-[family-name:var(--font-oswald-bold)] uppercase tracking-widest border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">Anuluj</button>
-                        <button type="submit" className="flex-1 py-3 bg-pink-400 text-white font-[family-name:var(--font-oswald-bold)] uppercase tracking-widest rounded-lg hover:bg-pink-500 shadow-md transition-colors">Zapisz</button>
+                        <button type="submit" className="flex-1 py-3 bg-slate-400 text-white font-[family-name:var(--font-oswald-bold)] uppercase tracking-widest rounded-lg hover:bg-slate-500 shadow-md transition-colors">Zapisz</button>
                     </div>
                 </form>
             </div>
@@ -386,14 +386,14 @@ function ListView({ visits, getClientName, onVisitClick }: { visits: Visit[], ge
                 </thead>
                 <tbody className="font-[family-name:var(--font-oswald-light)] text-lg text-slate-700">
                     {sortedVisits.map((visit) => (
-                        <tr key={visit.id} onClick={() => onVisitClick(visit)} className="border-b border-slate-50 hover:bg-pink-50/30 transition-colors cursor-pointer group">
+                        <tr key={visit.id} onClick={() => onVisitClick(visit)} className="border-b border-slate-50 hover:bg-slate-50/30 transition-colors cursor-pointer group">
                             <td className="py-4 px-6">
                                 <div className="flex flex-col">
                                     <span className="font-[family-name:var(--font-oswald-bold)] text-slate-800">{visit.date}</span>
-                                    <span className="text-pink-400 font-bold">{visit.time} - {visit.endTime}</span>
+                                    <span className="text-slate-400 font-bold">{visit.time} - {visit.endTime}</span>
                                 </div>
                             </td>
-                            <td className="py-4 px-6 font-medium text-slate-800 group-hover:text-pink-500 transition-colors">
+                            <td className="py-4 px-6 font-medium text-slate-800 group-hover:text-slate-500 transition-colors">
                                 {getClientName(visit.clientId)}
                             </td>
                             <td className="py-4 px-6 text-slate-500 italic">
@@ -448,10 +448,10 @@ function CalendarView({ selectedDate, setSelectedDate, setViewMode, visits }: { 
                         <button
                             key={date.toISOString()}
                             onClick={() => { setSelectedDate(date); setViewMode("Mój Dzień"); }}
-                            className={`aspect-square rounded-xl border flex flex-col items-center justify-center relative transition-all hover:border-pink-300 hover:bg-pink-50 group ${isToday ? "border-pink-400 bg-pink-50" : "border-slate-100 bg-slate-50/30"}`}
+                            className={`aspect-square rounded-xl border flex flex-col items-center justify-center relative transition-all hover:border-slate-300 hover:bg-slate-50 group ${isToday ? "border-slate-400 bg-slate-50" : "border-slate-100 bg-slate-50/30"}`}
                         >
-                            <span className={`text-xl font-[family-name:var(--font-oswald-bold)] ${isToday ? "text-pink-500" : "text-slate-700"}`}>{date.getDate()}</span>
-                            {count > 0 && <div className="absolute top-2 right-2"><div className="w-2 h-2 rounded-full bg-pink-400 shadow-[0_0_8px_rgba(244,114,182,0.6)]"></div></div>}
+                            <span className={`text-xl font-[family-name:var(--font-oswald-bold)] ${isToday ? "text-slate-500" : "text-slate-700"}`}>{date.getDate()}</span>
+                            {count > 0 && <div className="absolute top-2 right-2"><div className="w-2 h-2 rounded-full bg-slate-400 shadow-[0_0_8px_rgba(148,163,184,0.6)]"></div></div>}
                         </button>
                     );
                 })}
@@ -472,10 +472,10 @@ function DayView({ selectedDate, getVisitsForDate, getClientName, onVisitClick }
                 {hours.map((hour) => {
                     const isNow = new Date().getHours() === hour && new Date().toDateString() === selectedDate.toDateString();
                     return (
-                        <div key={hour} style={{ height: `${HOUR_HEIGHT}px` }} className={`flex border-b border-slate-50 last:border-0 transition-colors ${isNow ? "bg-pink-50/20" : ""}`}>
+                        <div key={hour} style={{ height: `${HOUR_HEIGHT}px` }} className={`flex border-b border-slate-50 last:border-0 transition-colors ${isNow ? "bg-slate-50/20" : ""}`}>
                             <div className="w-20 md:w-32 py-4 px-4 border-r border-slate-50 flex flex-col items-center justify-start bg-slate-50/30">
-                                <span className={`text-xl font-[family-name:var(--font-oswald-bold)] ${isNow ? "text-pink-500" : "text-slate-400"}`}>{hour}:00</span>
-                                {isNow && <span className="text-[10px] text-pink-400 font-bold uppercase tracking-tighter mt-1 animate-pulse">Teraz</span>}
+                                <span className={`text-xl font-[family-name:var(--font-oswald-bold)] ${isNow ? "text-slate-500" : "text-slate-400"}`}>{hour}:00</span>
+                                {isNow && <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter mt-1 animate-pulse">Teraz</span>}
                             </div>
                             <div className="flex-1"></div>
                         </div>
@@ -503,11 +503,11 @@ function DayView({ selectedDate, getVisitsForDate, getClientName, onVisitClick }
                                 width: 'calc(100% - 2rem)',
                                 left: '1rem'
                             }}
-                            className="absolute pointer-events-auto bg-white border-l-4 border-pink-400 shadow-lg rounded-r-xl p-4 overflow-hidden hover:z-20 transition-all flex flex-col justify-start gap-1 cursor-pointer hover:bg-pink-50/20"
+                            className="absolute pointer-events-auto bg-white border-l-4 border-slate-400 shadow-lg rounded-r-xl p-4 overflow-hidden hover:z-20 transition-all flex flex-col justify-start gap-1 cursor-pointer hover:bg-slate-50/20"
                         >
                             <div className="flex justify-between items-start">
                                 <div className="flex flex-col min-w-0">
-                                    <span className="text-pink-500 font-[family-name:var(--font-oswald-bold)] text-lg leading-tight truncate">
+                                    <span className="text-slate-500 font-[family-name:var(--font-oswald-bold)] text-lg leading-tight truncate">
                                         {visit.time} — {visit.endTime} : {getClientName(visit.clientId)}
                                     </span>
                                     <span className="text-slate-600 font-[family-name:var(--font-oswald-light)] text-sm font-bold truncate">
