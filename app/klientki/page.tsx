@@ -22,7 +22,7 @@ export default function KlientkiPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [clientToDelete, setClientToDelete] = useState<any | null>(null);
 
-    const [newClient, setNewClient] = useState({ firstName: "", lastName: "", phone: "", email: "", otherInfo: "" });
+    const [newClient, setNewClient] = useState({ name: "", phone: "", email: "", otherInfo: "" });
 
     const filteredClients = clients.filter((client) => {
         const query = searchQuery.toLowerCase();
@@ -35,7 +35,7 @@ export default function KlientkiPage() {
     const handleAddClient = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!newClient.firstName || !newClient.lastName || !newClient.phone) return;
+        if (!newClient.name || !newClient.phone) return;
 
         const res = await fetch("/api/klientki", {
             method: "POST",
@@ -43,7 +43,7 @@ export default function KlientkiPage() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                name: `${newClient.firstName} ${newClient.lastName}`,
+                name: newClient.name,
                 phone: newClient.phone,
                 email: newClient.email,
                 notes: newClient.otherInfo
@@ -52,7 +52,7 @@ export default function KlientkiPage() {
 
         if (res.ok) {
             await fetchClients(); // 🔥 odświeżenie z bazy
-            setNewClient({ firstName: "", lastName: "", phone: "", email: "", otherInfo: "" });
+            setNewClient({ name: "", phone: "", email: "", otherInfo: "" });
             setIsModalOpen(false);
         }
     };
@@ -121,8 +121,8 @@ export default function KlientkiPage() {
                             <tr className="bg-slate-50/80 text-slate-500 border-b-2 border-slate-100 font-[family-name:var(--font-oswald-bold)] tracking-wider uppercase text-sm">
                                 <th className="py-4 px-6 font-normal text-left">Imię i Nazwisko</th>
                                 <th className="py-4 px-6 font-normal text-center">Telefon</th>
-                                <th className="py-4 px-6 font-normal text-center">Ostatnia wizyta</th>
-                                <th className="py-4 pl-6 pr-4 font-normal text-center">Akcje</th>
+                                {/* Pusty nagłówek dla akcji, żeby nie było napisu */}
+                                <th className="py-4 pr-4 font-normal text-right"></th>
                             </tr>
                         </thead>
                         <tbody className="font-[family-name:var(--font-oswald-light)] text-lg text-slate-700">
@@ -140,14 +140,9 @@ export default function KlientkiPage() {
                                             {formatPhone(client.phone)}
                                         </td>
 
-                                        {/* 3. OSTATNIA WIZYTA (TEGO BRAKOWAŁO!) */}
-                                        <td className="py-4 px-6 text-slate-400 text-center">
-                                            {client.lastVisit ? client.lastVisit : "-"}
-                                        </td>
-
-                                        {/* 4. AKCJE (Wyrównane do prawej) */}
-                                        <td className="py-4 pl-6 pr-6 text-center">
-                                            <div className="flex items-center justify-center gap-2">
+                                        {/* 3. AKCJE (justify-end przesuwa do prawej, pr-4 to mały margines bezpieczeństwa od samej krawędzi) */}
+                                        <td className="py-4 pl-6 pr-4 text-right">
+                                            <div className="flex items-center justify-end gap-2">
                                                 <Link
                                                     href={`/klientki/${client.id}/rezerwacja`}
                                                     title="Dodaj wizytę"
@@ -181,7 +176,8 @@ export default function KlientkiPage() {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan={4} className="py-12 text-center text-slate-400 text-xl font-[family-name:var(--font-oswald-light)]">
+                                    {/* Zmiana colSpan z 4 na 3, bo mamy 3 kolumny */}
+                                    <td colSpan={3} className="py-12 text-center text-slate-400 text-xl font-[family-name:var(--font-oswald-light)]">
                                         Nie znaleziono klientek pasujących do wyszukiwania.
                                     </td>
                                 </tr>
@@ -222,29 +218,15 @@ export default function KlientkiPage() {
                             <form onSubmit={handleAddClient} className="p-6 md:p-8 flex flex-col gap-5">
                                 <div>
                                     <label className="block text-sm font-[family-name:var(--font-oswald-bold)] text-slate-500 uppercase tracking-widest mb-1">
-                                        Imię
+                                        Imię i nazwisko
                                     </label>
                                     <input
                                         type="text"
                                         required
-                                        value={newClient.firstName}
-                                        onChange={(e) => setNewClient({ ...newClient, firstName: e.target.value })}
+                                        value={newClient.name}
+                                        onChange={(e) => setNewClient({ ...newClient, name: e.target.value })}
                                         className="w-full border-b-2 border-slate-200 py-2 focus:outline-none focus:border-slate-400 transition-colors font-[family-name:var(--font-oswald-light)] text-lg placeholder-slate-300 bg-transparent"
-                                        placeholder="Wpisz imię..."
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-[family-name:var(--font-oswald-bold)] text-slate-500 uppercase tracking-widest mb-1">
-                                        Nazwisko
-                                    </label>
-                                    <input
-                                        type="text"
-                                        required
-                                        value={newClient.lastName}
-                                        onChange={(e) => setNewClient({ ...newClient, lastName: e.target.value })}
-                                        className="w-full border-b-2 border-slate-200 py-2 focus:outline-none focus:border-slate-400 transition-colors font-[family-name:var(--font-oswald-light)] text-lg placeholder-slate-300 bg-transparent"
-                                        placeholder="Wpisz nazwisko..."
+                                        placeholder="Wpisz imię i nazwisko..."
                                     />
                                 </div>
 

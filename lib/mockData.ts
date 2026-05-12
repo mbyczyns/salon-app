@@ -5,11 +5,10 @@ export interface Client {
 
   phone: string;
   email: string;
-  lastVisit?: string;
   otherInfo?: string;
 }
 
-export type VisitStatus = "odbyła się" | "nadchodząca";
+export type VisitStatus = "Odbyta" | "Nadchodząca" | "Anulowana";
 
 export interface Visit {
   id: string;
@@ -48,16 +47,16 @@ export let usersStore: User[] = [
 
 // Używamy let, aby umożliwić modyfikację w trakcie trwania sesji
 export let clientsStore: Client[] = [
-  { id: "1", name: "Anna Kowalska", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
-  { id: "2", name: "Katarzyna Nowak", phone: "987654321", email: "[EMAIL_ADDRESS]", lastVisit: "2025-11-02", otherInfo: "bardzo dlugie wlosy" },
-  { id: "3", name: "Magdalena Wiśniewska", phone: "555444333", email: "[EMAIL_ADDRESS]", lastVisit: "2025-09-20", otherInfo: "" },
-  { id: "4", name: "Zofia Wójcik", phone: "111222333", email: "[EMAIL_ADDRESS]", lastVisit: "2025-11-10", otherInfo: "" },
-  { id: "5", name: "Ewelina Madra", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
-  { id: "6", name: "Krystyna Woźniak", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
-  { id: "7", name: "Olga Kasprzak", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
-  { id: "8", name: "Maria Wysocka", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
-  { id: "9", name: "Kasia Kowalczyk", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
-  { id: "10", name: "Asia Bąk", phone: "123456789", email: "[EMAIL_ADDRESS]", lastVisit: "2025-10-15", otherInfo: "uczulenie na " },
+  { id: "1", name: "Anna Kowalska", phone: "123456789", email: "[EMAIL_ADDRESS]", otherInfo: "uczulenie na " },
+  { id: "2", name: "Katarzyna Nowak", phone: "987654321", email: "[EMAIL_ADDRESS]", otherInfo: "bardzo dlugie wlosy" },
+  { id: "3", name: "Magdalena Wiśniewska", phone: "555444333", email: "[EMAIL_ADDRESS]", otherInfo: "" },
+  { id: "4", name: "Zofia Wójcik", phone: "111222333", email: "[EMAIL_ADDRESS]", otherInfo: "" },
+  { id: "5", name: "Ewelina Madra", phone: "123456789", email: "[EMAIL_ADDRESS]", otherInfo: "uczulenie na " },
+  { id: "6", name: "Krystyna Woźniak", phone: "123456789", email: "[EMAIL_ADDRESS]", otherInfo: "uczulenie na " },
+  { id: "7", name: "Olga Kasprzak", phone: "123456789", email: "[EMAIL_ADDRESS]", otherInfo: "uczulenie na " },
+  { id: "8", name: "Maria Wysocka", phone: "123456789", email: "[EMAIL_ADDRESS]", otherInfo: "uczulenie na " },
+  { id: "9", name: "Kasia Kowalczyk", phone: "123456789", email: "[EMAIL_ADDRESS]", otherInfo: "uczulenie na " },
+  { id: "10", name: "Asia Bąk", phone: "123456789", email: "[EMAIL_ADDRESS]", otherInfo: "uczulenie na " },
 ];
 
 export let servicesStore: Service[] = [
@@ -71,21 +70,21 @@ export let servicesStore: Service[] = [
 
 export let visitsStore: Visit[] = [
   // Anna Kowalska
-  { id: "v1", clientId: "1", date: "2025-10-15", time: "10:00", endTime: "11:30", service: "Strzyżenie damskie", status: "odbyła się", price: 120, afterNotes: "Bardzo zadowolona, chce tak samo nastepnym razem.", photos: ["https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=2069&auto=format&fit=crop"] },
-  { id: "v2", clientId: "1", date: "2025-07-20", time: "11:30", endTime: "13:00", service: "Koloryzacja jednolita", status: "odbyła się" },
-  { id: "v3", clientId: "1", date: "2026-04-02", time: "09:00", endTime: "10:00", service: "Strzyżenie damskie", status: "nadchodząca" },
+  { id: "v1", clientId: "1", date: "2025-10-15", time: "10:00", endTime: "11:30", service: "Strzyżenie damskie", status: "Odbyta", price: 120, afterNotes: "Bardzo zadowolona, chce tak samo nastepnym razem.", photos: ["https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=2069&auto=format&fit=crop"] },
+  { id: "v2", clientId: "1", date: "2025-07-20", time: "11:30", endTime: "13:00", service: "Koloryzacja jednolita", status: "Odbyta" },
+  { id: "v3", clientId: "1", date: "2026-04-02", time: "09:00", endTime: "10:00", service: "Strzyżenie damskie", status: "Nadchodząca" },
 
   // Katarzyna Nowak
-  { id: "v4", clientId: "2", date: "2025-11-02", time: "13:00", endTime: "15:00", service: "Strzyżenie damskie", status: "odbyła się", price: 150, afterNotes: "Wlosy grube, wymagaja dluzszego suszenia." },
-  { id: "v5", clientId: "2", date: "2026-03-25", time: "14:00", endTime: "16:30", service: "Sombre / Ombre / Baleyage", status: "nadchodząca" },
+  { id: "v4", clientId: "2", date: "2025-11-02", time: "13:00", endTime: "15:00", service: "Strzyżenie damskie", status: "Odbyta", price: 150, afterNotes: "Wlosy grube, wymagaja dluzszego suszenia." },
+  { id: "v5", clientId: "2", date: "2026-03-25", time: "14:00", endTime: "16:30", service: "Sombre / Ombre / Baleyage", status: "Nadchodząca" },
 
   // Magdalena Wiśniewska
-  { id: "v6", clientId: "3", date: "2025-09-20", time: "09:30", endTime: "11:00", service: "Modelowanie okazjonalne", status: "odbyła się" },
+  { id: "v6", clientId: "3", date: "2025-09-20", time: "09:30", endTime: "11:00", service: "Modelowanie okazjonalne", status: "Odbyta" },
 
   // Zofia Wójcik
-  { id: "v7", clientId: "4", date: "2025-11-10", time: "15:00", endTime: "17:00", service: "Koloryzacja jednolita", status: "odbyła się" },
-  { id: "v8", clientId: "4", date: "2025-08-05", time: "10:00", endTime: "11:30", service: "Strzyżenie damskie", status: "odbyła się" },
-  { id: "v9", clientId: "4", date: "2026-04-10", time: "11:00", endTime: "12:00", service: "Strzyżenie męskie", status: "nadchodząca" },
+  { id: "v7", clientId: "4", date: "2025-11-10", time: "15:00", endTime: "17:00", service: "Koloryzacja jednolita", status: "Odbyta" },
+  { id: "v8", clientId: "4", date: "2025-08-05", time: "10:00", endTime: "11:30", service: "Strzyżenie damskie", status: "Odbyta" },
+  { id: "v9", clientId: "4", date: "2026-04-10", time: "11:00", endTime: "12:00", service: "Strzyżenie męskie", status: "Nadchodząca" },
 ];
 
 // Rejestr subskrypcji (uproszczony system reaktywności dla celów demonstracyjnych)

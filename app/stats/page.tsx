@@ -5,7 +5,7 @@ export default function StatsPage() {
                 Statystyki
             </h1>
             <p className="text-xl text-slate-600 font-[family-name:var(--font-oswald-light)] max-w-2xl leading-relaxed">
-                To jest strona statystyk. Routing działa poprawnie. W tym miejscu w przyszłości zintegrujesz kalendarz, harmonogram pracy i nadchodzące spotkania klientek.
+                To jest strona statystyk. Routing działa poprawnie. W tym miejscu w przyszłości znajdziesz statystyki bookings, przychodów, efektywności grafiku, analizę popularności usług i klientów.
             </p>
         </main>
     );

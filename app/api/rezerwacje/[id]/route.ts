@@ -10,7 +10,7 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
         data: {
             status: body.status,
             notes: body.notes !== undefined ? body.notes : undefined,
-             // ... ewentualnie tu dopiszemy cenę i zdjęcia w schemacie Prisma
+            // ... ewentualnie tu dopiszemy cenę i zdjęcia w schemacie Prisma
         }
     });
 

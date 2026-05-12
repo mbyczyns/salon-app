@@ -1,8 +1,14 @@
 import Image from "next/image";
 import GallerySection from "@/components/GallerySection";
-import { servicesStore } from "@/lib/mockData";
+import { prisma } from "@/lib/prisma";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const services = await prisma.service.findMany({
+    orderBy: { price: 'asc' }
+  });
+
   return (
     <main className="min-h-screen bg-[oklch(96.7%_0.001_286.375)] text-slate-900 flex flex-col items-center pb-12">
 
@@ -120,17 +126,17 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody className="font-[family-name:var(--font-oswald-light)] text-lg text-slate-700">
-                {servicesStore.map((service) => (
+                {services.map((service: any) => (
                   <tr key={service.name} className="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
                     <td className="py-4 pr-4">{service.name}</td>
-                    <td className="py-4 px-4 text-center text-slate-400 text-base">{service.duration} min</td>
+                    <td className="py-4 px-4 text-center text-slate-400 text-base">{service.duration}</td>
                     <td className="py-4 font-[family-name:var(--font-oswald-bold)] text-slate-400 text-right tracking-wide">{service.price} zł</td>
                   </tr>
                 ))}
               </tbody>
             </table>
             <p className="mt-8 text-sm text-slate-400 font-[family-name:var(--font-oswald-light)] text-center bg-slate-50 p-4 rounded-lg">
-              * Podane ceny są cenami orientacyjnymi. Ostateczny koszt zależy od długości i gęstości włosów oraz zużycia materiału.
+              * Podane ceny i czasy trwania usług są orientacyjne. Ostateczny koszt i czas trwania usługi mogą się różnić w zależności od długości i gęstości włosów oraz ilości zużytego materiału.
             </p>
           </div>
         </div>

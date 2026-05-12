@@ -52,7 +52,7 @@ model Appointment {
     date        DateTime
     startTime   String
     endTime     String
-    status      String   @default("scheduled")
+    status      String   @default("Nadchodząca")
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
     notes       String?

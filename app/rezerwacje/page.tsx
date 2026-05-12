@@ -7,13 +7,7 @@ import VisitDetailsModal from "@/components/VisitDetailsModal";
 
 type ViewMode = "Lista" | "Kalendarz" | "Mój Dzień";
 
-const SERVICES = [
-    "Strzyżenie damskie",
-    "Strzyżenie męskie",
-    "Koloryzacja jednolita",
-    "Sombre / Ombre / Baleyage",
-    "Modelowanie okazjonalne",
-];
+
 
 export default function RezerwacjePage() {
     const [viewMode, setViewMode] = useState<ViewMode>("Lista");
@@ -24,6 +18,7 @@ export default function RezerwacjePage() {
 
 
     const [visits, setVisits] = useState<Visit[]>([]);
+    const [services, setServices] = useState<{ id: number; name: string }[]>([]);
 
     async function fetchVisits() {
         try {
@@ -70,7 +65,18 @@ export default function RezerwacjePage() {
     useEffect(() => {
         fetchVisits();
         fetchClients();
+        fetchServices();
     }, []);
+
+    async function fetchServices() {
+        try {
+            const res = await fetch("/api/uslugi");
+            const data = await res.json();
+            setServices(data);
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     async function fetchClients() {
         const res = await fetch("/api/klientki");
@@ -191,6 +197,7 @@ export default function RezerwacjePage() {
                         onClose={() => setIsAddModalOpen(false)}
                         initialDate={selectedDate.toLocaleDateString('en-CA')}
                         clients={clients}
+                        services={services}
                         onSuccess={fetchVisits}
                     />
                 )}
@@ -208,6 +215,8 @@ export default function RezerwacjePage() {
     );
 }
 
+import { createPortal } from "react-dom";
+
 // ─── MODAL REZERWACJI ─────────────────────────────────────────────────────────
 
 function AddReservationModal({
@@ -215,12 +224,14 @@ function AddReservationModal({
     onClose,
     initialDate,
     clients,
+    services,
     onSuccess
 }: {
     isOpen: boolean,
     onClose: () => void,
     initialDate: string,
     clients: Client[],
+    services: { id: number; name: string }[],
     onSuccess: () => void
 }) {
     const [searchQuery, setSearchQuery] = useState("");
@@ -229,10 +240,21 @@ function AddReservationModal({
         date: initialDate,
         time: "",
         endTime: "",
-        service: SERVICES[0],
+        service: services.length > 0 ? services[0].name : "",
         notes: "",
     });
+
+    useEffect(() => {
+        if (services.length > 0 && !form.service) {
+            setForm(prev => ({ ...prev, service: services[0].name }));
+        }
+    }, [services, form.service]);
     const [error, setError] = useState<string | null>(null);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const filteredClients = useMemo(() => {
         if (searchQuery.length < 2) return [];
@@ -284,8 +306,10 @@ function AddReservationModal({
         onClose();
     };
 
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={onClose}>
+    if (!mounted) return null;
+
+    return createPortal(
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={onClose}>
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>
                 <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
                     <h3 className="text-2xl font-[family-name:var(--font-oswald-bold)] text-slate-500 tracking-wide">Nowa Rezerwacja</h3>
@@ -342,7 +366,7 @@ function AddReservationModal({
                         <div>
                             <label className="block text-sm font-[family-name:var(--font-oswald-bold)] text-slate-500 uppercase tracking-widest mb-1">Usługa</label>
                             <select value={form.service} onChange={e => setForm({ ...form, service: e.target.value })} className="w-full border-b-2 border-slate-200 py-2 bg-transparent">
-                                {SERVICES.map(s => <option key={s} value={s}>{s}</option>)}
+                                {services.map(s => <option key={s.id} value={s.name}>{s.name}</option>)}
                             </select>
                         </div>
                     </div>
@@ -364,7 +388,8 @@ function AddReservationModal({
                     </div>
                 </form>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }
 
@@ -400,7 +425,7 @@ function ListView({ visits, getClientName, onVisitClick }: { visits: Visit[], ge
                                 {visit.service}
                             </td>
                             <td className="py-4 px-6 text-right">
-                                <span className={`px-3 py-1 rounded-full text-xs uppercase tracking-widest font-bold ${visit.status === "odbyła się" ? "bg-emerald-100 text-emerald-700" : "bg-blue-100 text-blue-700"
+                                <span className={`px-3 py-1 rounded-full text-xs uppercase tracking-widest font-bold ${visit.status === "Odbyta" ? "bg-emerald-100 text-emerald-700" : "bg-blue-100 text-blue-700"
                                     }`}>
                                     {visit.status}
                                 </span>
@@ -514,7 +539,7 @@ function DayView({ selectedDate, getVisitsForDate, getClientName, onVisitClick }
                                         {visit.service}
                                     </span>
                                 </div>
-                                <span className={`flex-shrink-0 px-3 py-1 rounded-full text-[10px] uppercase font-bold tracking-widest ${visit.status === "odbyła się" ? "bg-emerald-100 text-emerald-600" : "bg-blue-100 text-blue-600"}`}>
+                                <span className={`flex-shrink-0 px-3 py-1 rounded-full text-[10px] uppercase font-bold tracking-widest ${visit.status === "Odbyta" ? "bg-emerald-100 text-emerald-600" : "bg-blue-100 text-blue-600"}`}>
                                     {visit.status}
                                 </span>
                             </div>

@@ -5,13 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { formatPhone } from "@/lib/mockData";
 import Link from "next/link";
 
-const SERVICES = [
-  "Strzyżenie damskie",
-  "Strzyżenie męskie",
-  "Koloryzacja jednolita",
-  "Sombre / Ombre / Baleyage",
-  "Modelowanie okazjonalne",
-];
+
 
 export default function RezerwacjaPage() {
   const router = useRouter();
@@ -19,6 +13,7 @@ export default function RezerwacjaPage() {
   const id = typeof params.id === "string" ? params.id : Array.isArray(params.id) ? params.id[0] : "";
   const [client, setClient] = useState<any>(null);
   const [visits, setVisits] = useState<any[]>([]);
+  const [services, setServices] = useState<{ id: number; name: string }[]>([]);
 
   useEffect(() => {
     fetch(`/api/klientki/${id}/details`)
@@ -27,15 +22,25 @@ export default function RezerwacjaPage() {
         setClient(data.client);
         setVisits(data.visits);
       });
+
+    fetch(`/api/uslugi`)
+      .then(res => res.json())
+      .then(data => setServices(data));
   }, [id]);
 
   const [form, setForm] = useState({
     date: "",
     time: "",
     endTime: "",
-    service: SERVICES[0],
+    service: "",
     notes: "",
   });
+
+  useEffect(() => {
+    if (services.length > 0 && !form.service) {
+      setForm(prev => ({ ...prev, service: services[0].name }));
+    }
+  }, [services, form.service]);
 
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
@@ -111,7 +116,7 @@ export default function RezerwacjaPage() {
             Wizyta zapisana!
           </h2>
           <p className="text-slate-500 font-[family-name:var(--font-oswald-light)] text-lg mb-8">
-            Rezerwacja dla <span className="font-[family-name:var(--font-oswald-bold)] text-slate-700">{client.firstName} {client.lastName}</span> na {form.date} w godzinach {form.time} - {form.endTime} została dodana.
+            Rezerwacja dla <span className="font-[family-name:var(--font-oswald-bold)] text-slate-700">{client.name}</span> na {form.date} w godzinach {form.time} - {form.endTime} została dodana.
           </p>
           <Link
             href={`/klientki/${client.id}`}
@@ -135,7 +140,7 @@ export default function RezerwacjaPage() {
           </Link>
           <span>/</span>
           <Link href={`/klientki/${client.id}`} className="hover:text-pink-400 transition-colors">
-            {client.firstName} {client.lastName}
+            {client.name}
           </Link>
           <span>/</span>
           <span className="text-slate-600">Nowa wizyta</span>
@@ -145,12 +150,12 @@ export default function RezerwacjaPage() {
         <div className="bg-white rounded-2xl shadow-xl outline outline-black/5 px-8 py-6 flex items-center gap-4">
           <div className="w-14 h-14 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
             <span className="text-2xl font-[family-name:var(--font-oswald-bold)] text-pink-400">
-              {client.firstName[0]}{client.lastName[0]}
+              {client.name?.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase()}
             </span>
           </div>
           <div>
             <p className="text-xl font-[family-name:var(--font-oswald-bold)] text-slate-800">
-              {client.firstName} {client.lastName}
+              {client.name}
             </p>
             <p className="text-slate-500 font-[family-name:var(--font-oswald-light)]">
               {formatPhone(client.phone)}
@@ -224,8 +229,8 @@ export default function RezerwacjaPage() {
                 onChange={(e) => setForm({ ...form, service: e.target.value })}
                 className="w-full border-b-2 border-slate-200 py-2 text-lg font-[family-name:var(--font-oswald-light)] focus:outline-none focus:border-pink-400 transition-colors bg-transparent text-slate-700 cursor-pointer"
               >
-                {SERVICES.map((s) => (
-                  <option key={s} value={s}>{s}</option>
+                {services.map((s) => (
+                  <option key={s.id} value={s.name}>{s.name}</option>
                 ))}
               </select>
             </div>

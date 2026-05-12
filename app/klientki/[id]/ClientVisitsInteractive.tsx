@@ -9,10 +9,10 @@ export default function ClientVisitsInteractive({ visits }: { visits: Visit[] })
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const upcoming = visits
-    .filter((v) => v.status === "nadchodząca")
+    .filter((v) => v.status === "Nadchodząca")
     .sort((a, b) => a.date.localeCompare(b.date));
   const past = visits
-    .filter((v) => v.status === "odbyła się")
+    .filter((v) => v.status === "Odbyta")
     .sort((a, b) => b.date.localeCompare(a.date));
 
   const handleVisitClick = (visit: Visit) => {
@@ -41,10 +41,10 @@ export default function ClientVisitsInteractive({ visits }: { visits: Visit[] })
       />
 
       {selectedVisit && (
-        <VisitDetailsModal 
-          visit={selectedVisit} 
-          isOpen={isModalOpen} 
-          onClose={() => setIsModalOpen(false)} 
+        <VisitDetailsModal
+          visit={selectedVisit}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
         />
       )}
     </>
@@ -106,16 +106,16 @@ function VisitsSection({
                   {visit.service}
                 </p>
                 <div className="flex gap-4 items-center">
-                    {visit.price && (
-                        <p className="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 rounded">
-                            {visit.price} PLN
-                        </p>
-                    )}
-                    {visit.afterNotes && (
-                        <p className="text-sm text-slate-400 font-[family-name:var(--font-oswald-light)] italic truncate max-w-xs">
-                          {visit.afterNotes}
-                        </p>
-                    )}
+                  {visit.price && (
+                    <p className="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 rounded">
+                      {visit.price} PLN
+                    </p>
+                  )}
+                  {visit.afterNotes && (
+                    <p className="text-sm text-slate-400 font-[family-name:var(--font-oswald-light)] italic truncate max-w-xs">
+                      {visit.afterNotes}
+                    </p>
+                  )}
                 </div>
               </div>
 

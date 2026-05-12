@@ -44,7 +44,7 @@ export async function POST(req: Request) {
             date: new Date(body.date),
             startTime: body.time,
             endTime: body.endTime,
-            status: "nadchodząca",
+            status: "Nadchodząca",
             notes: body.notes
         }
     });
